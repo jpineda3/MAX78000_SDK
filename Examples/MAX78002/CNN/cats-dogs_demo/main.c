@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (C) 2020-2021 Maxim Integrated Products, Inc., All rights Reserved.
+* Copyright (C) 2020-2022 Maxim Integrated Products, Inc., All rights Reserved.
 *
 * This software is protected by copyright laws of the United States and
 * of foreign countries. This material may also be protected by patent laws
@@ -45,6 +45,7 @@
 #include "sampledata.h"
 #include "utils.h"
 
+
 // Comment out USE_SAMPLEDATA to use Camera module
 //#define USE_SAMPLEDATA
 
@@ -53,8 +54,12 @@
 #define IMAGE_SIZE_Y  (64)
 #define CAMERA_FREQ   (10 * 1000 * 1000)
 
+#ifdef TFT_ENABLE
 #define TFT_BUFF_SIZE   30    // TFT buffer size
-
+int image_bitmap_1 = (int)& img_1_rgb565[0];
+int font_1 = (int)& SansSerif16x16[0];
+int font_2 = (int)& SansSerif16x16[0];
+#endif
 const char classes[CNN_NUM_OUTPUTS][10] = {"Cat", "Dog"};
 
 volatile uint32_t cnn_time; // Stopwatch
@@ -122,7 +127,68 @@ int8_t unsigned_to_signed(uint8_t val)
 {
     return val - 128;
 }
+#ifdef TFT_ENABLE
+/* **************************************************************************** */
+void TFT_Print(char* str, int x, int y, int font, int length)
+{
+    // fonts id
+    text_t text;
+    text.data = str;
+    text.len = length;
+    MXC_TFT_PrintFont(x, y, font, &text, NULL);
+}
 
+#define X_OFFSET    47
+#define Y_OFFSET    15
+#define SCALE       2.2
+
+/* **************************************************************************** */
+void lcd_show_sampledata(uint32_t* data0, uint32_t* data1, uint32_t* data2, int length)
+{
+    int i;
+    int j;
+    int x;
+    int y;
+    int r;
+    int g;
+    int b;
+    int scale = SCALE;
+
+    uint32_t color;
+    uint8_t* ptr0;
+    uint8_t* ptr1;
+    uint8_t* ptr2;
+
+    x = X_OFFSET;
+    y = Y_OFFSET;
+
+    for (i = 0; i < length; i++) {
+        ptr0 = (uint8_t*)&data0[i];
+        ptr1 = (uint8_t*)&data1[i];
+        ptr2 = (uint8_t*)&data2[i];
+
+        for (j = 0; j < 4; j++) {
+            r = ptr0[j];
+            g = ptr1[j];
+            b = ptr2[j];
+
+            color = RGB(r, g, b); // convert to RGB565
+
+            MXC_TFT_WritePixel(x * scale, y * scale, scale, scale, color);
+            x += 1;
+
+            if (x >= (IMAGE_SIZE_X + X_OFFSET)) {
+                x = X_OFFSET;
+                y += 1;
+
+                if ((y + 6) >= (IMAGE_SIZE_Y + Y_OFFSET)) {
+                    return;
+                }
+            }
+        }
+    }
+}
+#endif
 /* **************************************************************************** */
 void process_camera_img(uint32_t* data0, uint32_t* data1, uint32_t* data2)
 {
@@ -209,9 +275,13 @@ int main(void)
 {
     int i;
     int digs, tens;
-    int ret = 0;
-    int result[CNN_NUM_OUTPUTS];// = {0};
-    int dma_channel;
+    int result[CNN_NUM_OUTPUTS];
+#ifndef USE_SAMPLEDATA
+    int ret = 0, dma_channel;
+#endif
+#ifdef TFT_ENABLE
+    char buff[TFT_BUFF_SIZE];
+#endif
 
     printf("\n\nCats-vs-Dogs Evkit Demo\n");
 
@@ -229,11 +299,8 @@ int main(void)
     MXC_Delay(SEC(2)); // Let debugger interrupt if needed
 
     /* Enable peripheral, enable CNN interrupt, turn on CNN clock */
-    /* CNN clock: 50 MHz div 1 */
-    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
 
-    /* Configure P2.5, turn on the CNN Boost */
-    cnn_boost_enable(MXC_GPIO2, MXC_GPIO_PIN_5);
 
     /* Bring CNN state machine into consistent state */
     cnn_init();
@@ -244,6 +311,19 @@ int main(void)
     /* Configure CNN state machine */
     cnn_configure();
 
+#ifdef TFT_ENABLE
+    /* Initialize TFT display */
+    printf("Init LCD.\n");
+    /* Initialize TFT display */
+    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+    MXC_TFT_SetRotation(ROTATE_270);
+    MXC_TFT_ShowImage(0, 0, image_bitmap_1);
+    MXC_TFT_SetForeGroundColor(WHITE);   // set chars to white
+
+    MXC_Delay(1000000);
+#endif
+
+#ifndef USE_SAMPLEDATA
     // Initialize DMA for camera interface
     MXC_DMA_Init();
     dma_channel = MXC_DMA_AcquireChannel();
@@ -258,6 +338,17 @@ int main(void)
         printf("Error returned from setting up camera. Error %d\n", ret);
         return -1;
     }
+#endif
+
+#ifdef TFT_ENABLE
+
+    MXC_TFT_SetBackGroundColor(4);
+
+    memset(buff, 32, TFT_BUFF_SIZE);
+    TFT_Print(buff, 55, 50, font_2, sprintf(buff, "ANALOG DEVICES"));
+    TFT_Print(buff, 55, 90, font_1, sprintf(buff, "Cats-vs-Dogs Demo"));
+    TFT_Print(buff, 55, 130, font_2, sprintf(buff, "PRESS PB1 TO START!"));
+#endif
 
     int frame = 0;
 
@@ -265,6 +356,12 @@ int main(void)
         printf("********** Press PB1 to capture an image **********\r\n");
 
         while (!PB_Get(0));
+
+#ifdef TFT_ENABLE
+        MXC_TFT_ClearScreen();
+
+        TFT_Print(buff, 55, 110, font_2, sprintf(buff, "CAPTURING IMAGE...."));
+#endif
 
 #ifdef USE_SAMPLEDATA
         // Copy the sampledata reference to the camera buffer as a test.
@@ -282,6 +379,14 @@ int main(void)
         process_camera_img(input_0_camera, input_1_camera, input_2_camera);
 #endif
 
+#ifdef TFT_ENABLE
+        // Show the input data on the lcd.
+        MXC_TFT_ClearScreen();
+   //     MXC_TFT_ShowImage(1, 1, image_bitmap_2);
+        printf("Show camera frame on LCD.\n");
+        lcd_show_sampledata(input_0_camera, input_1_camera, input_2_camera, 1024);
+#endif
+
         convert_img_unsigned_to_signed(input_0_camera, input_1_camera, input_2_camera);
 
         // Enable CNN clock
@@ -289,19 +394,15 @@ int main(void)
 
         cnn_init(); // Bring state machine into consistent state
 //        cnn_load_weights(); // No need to reload kernels
-//        cnn_load_bias(); // No need to reload bias
+        cnn_load_bias(); // No need to reload bias
         cnn_configure(); // Configure state machine
         cnn_load_input();
         cnn_start();
 
+
         while (cnn_time == 0) {
             __WFI();    // Wait for CNN interrupt
         }
-
-        // Switch CNN clock and disable PLL
-        MXC_GCR->pclkdiv = (MXC_GCR->pclkdiv & ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL))
-                           | MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK;
-        MXC_GCR->ipll_ctrl &= ~MXC_F_GCR_IPLL_CTRL_EN;
 
         // Unload CNN data
         softmax_layer();
@@ -323,6 +424,34 @@ int main(void)
         }
 
         printf("\n");
+
+#ifdef TFT_ENABLE
+        memset(buff, 32, TFT_BUFF_SIZE);
+        TFT_Print(buff, 10, 150, font_1, sprintf(buff, "Image Detected : "));
+        memset(buff, 0, TFT_BUFF_SIZE);
+        TFT_Print(buff, 10, 180, font_1, sprintf(buff, "Probability : "));
+        memset(buff, 32, TFT_BUFF_SIZE);
+
+        if (result[0] > result[1]) {
+            TFT_Print(buff, 195, 150, font_1, sprintf(buff, "CAT"));
+            TFT_Print(buff, 135, 180, font_1, sprintf(buff, "%d%%", result[0]));
+        }
+        else if (result[1] > result[0]) {
+            TFT_Print(buff, 195, 150, font_1, sprintf(buff, "DOG"));
+            TFT_Print(buff, 135, 180, font_1, sprintf(buff, "%d%%", result[1]));
+        }
+        else {
+            TFT_Print(buff, 195, 150, font_1, sprintf(buff, "Unknown"));
+            memset(buff, 32, TFT_BUFF_SIZE);
+            TFT_Print(buff, 135, 180, font_1, sprintf(buff, "NA"));
+        }
+
+        TFT_Print(buff, 10, 210, font_1, sprintf(buff, "PRESS PB1 TO CAPTURE IMAGE"));
+#endif
+#ifdef USE_SAMPLEDATA
+	MXC_Delay(SEC(1));
+#endif
+
     }
 
     return 0;

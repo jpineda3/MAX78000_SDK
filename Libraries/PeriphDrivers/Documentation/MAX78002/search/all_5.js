@@ -1,5 +1,9 @@
 var searchData=
 [
+  ['d0_5fswap_5fsel',['d0_swap_sel',['../group__csi2.html#a5ad864a9d096ce130cd0747f0f01a319',1,'mxc_csi2_lane_src_t']]],
+  ['d1_5fswap_5fsel',['d1_swap_sel',['../group__csi2.html#a1dcdd0584dc98edba2f333f03b9d9c4d',1,'mxc_csi2_lane_src_t']]],
+  ['d2_5fswap_5fsel',['d2_swap_sel',['../group__csi2.html#a8f9f9770020bf3e20508d134bb808fa8',1,'mxc_csi2_lane_src_t']]],
+  ['d3_5fswap_5fsel',['d3_swap_sel',['../group__csi2.html#a65b1fc45bb584929c1a4ad2c9732530b',1,'mxc_csi2_lane_src_t']]],
   ['data',['data',['../group__adc__registers.html#a11743546f5166381c1b12da20dc283b7',1,'mxc_adc_regs_t::data()'],['../group__flc__registers.html#a4fc290b2f07d5e08fcae310058bb5198',1,'mxc_flc_regs_t::data()'],['../group__owm__registers.html#a11743546f5166381c1b12da20dc283b7',1,'mxc_owm_regs_t::data()'],['../group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84',1,'mxc_trng_regs_t::data()']]],
   ['databuffer',['dataBuffer',['../group__crc.html#a282286b72323deb59713927b3d08ce8e',1,'mxc_crc_req_t']]],
   ['datafmt',['datafmt',['../group__adc__registers.html#aef400fd0e262740ce9328d13e102cb8a',1,'mxc_adc_regs_t']]],
@@ -22,10 +26,12 @@ var searchData=
   ['dma_5fdstrld',['DMA_DSTRLD',['../group___d_m_a___d_s_t_r_l_d.html',1,'']]],
   ['dma_5finten',['DMA_INTEN',['../group___d_m_a___i_n_t_e_n.html',1,'']]],
   ['dma_5fintfl',['DMA_INTFL',['../group___d_m_a___i_n_t_f_l.html',1,'']]],
+  ['dma_5fmode',['dma_mode',['../group__csi2.html#af6829882825257bd58721c3947054c2c',1,'mxc_csi2_vfifo_cfg_t']]],
   ['dma_5fregisters',['DMA_Registers',['../group__dma__registers.html',1,'']]],
   ['dma_5fsrc',['DMA_SRC',['../group___d_m_a___s_r_c.html',1,'']]],
   ['dma_5fsrcrld',['DMA_SRCRLD',['../group___d_m_a___s_r_c_r_l_d.html',1,'']]],
   ['dma_5fstatus',['DMA_STATUS',['../group___d_m_a___s_t_a_t_u_s.html',1,'']]],
+  ['dma_5fwhole_5fframe',['dma_whole_frame',['../group__csi2.html#a3f2e9d34ffee7f44efa8a1771bb35f49',1,'mxc_csi2_vfifo_cfg_t']]],
   ['dmach0',['dmach0',['../group__i2s__registers.html#a54da5cb46f0741da08482f576500b10f',1,'mxc_i2s_regs_t']]],
   ['dphy_5frst_5fn',['dphy_rst_n',['../group__csi2__registers.html#adb56cd287542ce96a6ebb7be3b2661c2',1,'mxc_csi2_regs_t']]],
   ['ds0',['ds0',['../group__gpio__registers.html#af3fd471fbfb5eddfdcd5067069138b32',1,'mxc_gpio_regs_t']]],

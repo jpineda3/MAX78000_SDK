@@ -13,10 +13,12 @@ var group___m_x_c___error___codes =
     [ "E_NOT_SUPPORTED", "group___m_x_c___error___codes.html#gac32e2eaa0134cd9626a55a2587662501", null ],
     [ "E_NULL_PTR", "group___m_x_c___error___codes.html#ga97fcdfde06438bcf94181400389bd7b9", null ],
     [ "E_OVERFLOW", "group___m_x_c___error___codes.html#ga2ae9bebfa7ace670d4d2718bd17142b1", null ],
+    [ "E_OVERRUN", "group___m_x_c___error___codes.html#ga17cc3e15b15457a04accc90cc3d07ff6", null ],
     [ "E_SHUTDOWN", "group___m_x_c___error___codes.html#gab45a288b4079b16ffce3f406a18e8675", null ],
     [ "E_SUCCESS", "group___m_x_c___error___codes.html#gad1a31c5316d5f51ca5c1c4fb2b9b1958", null ],
     [ "E_TIME_OUT", "group___m_x_c___error___codes.html#ga0ceb96680c8c5a1ab4fa6f9224e0588b", null ],
     [ "E_UNDERFLOW", "group___m_x_c___error___codes.html#gacb13f1b2a8324564117de8667601d3a1", null ],
+    [ "E_UNDERRUN", "group___m_x_c___error___codes.html#ga8e4d5ea0ee1a04e90a7292692270ebea", null ],
     [ "E_UNINITIALIZED", "group___m_x_c___error___codes.html#ga9b082eeb1f1f2b42716c266d8e5cfcf5", null ],
     [ "E_UNKNOWN", "group___m_x_c___error___codes.html#gae18e2ea113a973952f0f850eb6ecb476", null ]
 ];

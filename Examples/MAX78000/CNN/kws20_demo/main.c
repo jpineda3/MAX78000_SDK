@@ -71,7 +71,7 @@
 #define VERSION   "3.0.2 (02/08/21)" // Low power mode
 /* **** Definitions **** */
 #define CLOCK_SOURCE    0   // 0: IPO,  1: ISO, 2: IBRO
-#define SLEEP_MODE      2   // 0: no sleep,  1: sleep,   2:deepsleep(LPM)
+#define SLEEP_MODE      0   // 0: no sleep,  1: sleep,   2:deepsleep(LPM)
 #define WUT_ENABLE          // enables WUT timer
 #define WUT_USEC    380     // continuous WUT duration close to I2S polling time in usec
 //#define ENERGY            // if enabled, turn off LED2, toggle LED1 for 10sec for energy measurements on Power monitor (System Power)

@@ -1,13 +1,15 @@
 var group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l =
 [
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L0", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga7c91377565676c4732415514beaa5a34", null ],
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L0_POS", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#gace1f4357e95b372fd82306141523a2d4", null ],
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L1", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga696f118ae9d29b94dd79b47581c896c6", null ],
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L1_POS", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga88917cdbda855224ddcbd0b1a2eaea76", null ],
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L2", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga687e479814eead295879b3946839a769", null ],
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L2_POS", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#gadaa82db4d203a2505c8a52aa1c9cfe88", null ],
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L3", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#gaf57f8b264617a11171143ab3cb197beb", null ],
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L3_POS", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga63534958081766ca862ff7efd4e9f9da", null ],
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L4", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga68bd44fa332e6170aef3f127436ef929", null ],
-    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_PAD_CDRX_L4_POS", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga2d12369518206130898c3e2d27047a4e", null ]
+    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_SRC", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga0ddde5327dd61088970985c9272a8380", null ],
+    [ "MXC_F_CSI2_CFG_D3_SWAP_SEL_SRC_POS", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga85bf205778cbaf8926f606de2f479ea5", null ],
+    [ "MXC_S_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L0", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#gae7dda948f8718083b34d90587f3d663a", null ],
+    [ "MXC_S_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L1", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga896a2f3cc2ecaf4f96eee077bd166a32", null ],
+    [ "MXC_S_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L2", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga0da034772a297db96c4d65e2e82be98e", null ],
+    [ "MXC_S_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L3", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#gafb3332ce59618813606fe20c6fd0e124", null ],
+    [ "MXC_S_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L4", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga525545d59b88d42d7dafe3e8fdde9c74", null ],
+    [ "MXC_V_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L0", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#gac11e0c770fb06a386c11f7a922e1bc3a", null ],
+    [ "MXC_V_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L1", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga7c5ceef28ed93c6c5ad7bf6b42f3ae96", null ],
+    [ "MXC_V_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L2", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#gaddeaeafbaa11f7c6ecb036cdb2a200c2", null ],
+    [ "MXC_V_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L3", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#gaaea6056ca83fb3251525c06c721ee30f", null ],
+    [ "MXC_V_CSI2_CFG_D3_SWAP_SEL_SRC_PAD_CDRX_L4", "group___c_s_i2___c_f_g___d3___s_w_a_p___s_e_l.html#ga1303a04b356f89fdfaa7cbfc9c5a955f", null ]
 ];

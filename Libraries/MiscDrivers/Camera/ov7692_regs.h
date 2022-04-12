@@ -60,7 +60,9 @@
 
 #define IVERTICAL_LOW   (0xcb)
 
+#define REG14   (0x14)
 #define REG81   (0x81)
+#define REG82   (0x82)
 #define REG28   (0x28)
 #define REGD2   (0xd2)
 #define REGDA   (0xda)

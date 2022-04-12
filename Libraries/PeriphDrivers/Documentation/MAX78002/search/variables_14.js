@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['wait_5fcyc',['wait_cyc',['../group__csi2.html#a2409e273e9795ca260f9ea3d9ea97caf',1,'mxc_csi2_vfifo_cfg_t']]],
+  ['wait_5fen',['wait_en',['../group__csi2.html#a018ab766db8f21fb5f7844466beafca7',1,'mxc_csi2_vfifo_cfg_t']]],
   ['wakeup',['wakeup',['../group__sdhc__registers.html#aa484be329daed88e2101ebe9abbb5ee5',1,'mxc_sdhc_regs_t']]],
   ['welr0',['welr0',['../group__flc__registers.html#a5ffceee1cc62e475d43a0aad277b5007',1,'mxc_flc_regs_t']]],
   ['welr1',['welr1',['../group__flc__registers.html#a63ceecfd1cf9247abe02a8313915af15',1,'mxc_flc_regs_t']]],

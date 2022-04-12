@@ -4,6 +4,22 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+April 11, 2022
+* Added power down mode to MAX78000 and MAX78002 LP examples.
+* Added support for various cameras into the MAX78002 CameraIF example.
+* Added TFT use into MAX78002 cats-dogs_demo example.
+* Added MIPI-CSI2 peripheral driver and example for MAX78002.
+* Fixed incorrect memory size in MAX78002's GCC linker script.
+* Added contrast and brightness settings to camera driver.
+* Fixed I2C general call addressing enable/disable bug.
+* Resolved pointer alignment warnings.
+* Added support for enabling/disabling the IPLL clock for the MAX78002.
+* Added VSCode support for all example projects.
+* Added I2C_SCAN example for MAX78000 and MAX78002.
+* Added kws20_demo for MAX78002.
+* Added additional 3rd party camera, display, and touch screen drivers.
+* Added BSP for MAX78000 audio board.
+
 February 15, 2022
 * Moved common board support files to /Libraries/MiscDrivers folder.
 * Added FreeRTOS examples for the MAX78000 and MAX78002.

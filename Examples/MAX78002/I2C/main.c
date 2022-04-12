@@ -62,6 +62,9 @@
 #define I2C_SLAVE       MXC_I2C0
 
 #define I2C_FREQ        100000
+// This example may become unreliable at I2C frequencies above 100kHz.
+// This is only an issue in the loopback configuration, where the I2C block is
+// connected to itself.
 #define I2C_SLAVE_ADDR  (0x51)
 #define I2C_BYTES       100
 
@@ -111,7 +114,7 @@ int slaveHandler(mxc_i2c_regs_t* i2c, mxc_i2c_slave_event_t event, void* data)
     
         // Serve as a 16 byte loopback, returning data*2
         for (int i = 0; i < I2C_BYTES; i++) {
-            Stxdata[i] = i;
+            Stxdata[i] = Srxdata[i];
         }
         
         txnum = I2C_BYTES;

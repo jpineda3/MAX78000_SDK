@@ -108,11 +108,11 @@ CC=${PREFIX}-gcc
 CXX=${PREFIX}-g++
 
 # Discover if we are using GCC > 4.8.0
-GCCVERSIONGTEQ4 := $(shell expr `gcc -dumpversion | cut -f1 -d.` \> 4)
+GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \> 4)
 ifeq "$(GCCVERSIONGTEQ4)" "0"
-GCCVERSIONGTEQ4 := $(shell expr `gcc -dumpversion | cut -f1 -d.` \>= 4)
+GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \>= 4)
 ifeq "$(GCCVERSIONGTEQ4)" "1"
-GCCVERSIONGTEQ4 := $(shell expr `gcc -dumpversion | cut -f2 -d.` \>= 8)
+GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f2 -d.` \>= 8)
 endif
 
 endif

@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2020-2022 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -52,7 +52,6 @@ COMPILER=GCC
 # Specify the board used
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
-#BOARD=FTHR_RevA
 endif
 
 # Enable the connected camera
@@ -81,12 +80,15 @@ SRCS  = main.c
 SRCS += cnn.c
 SRCS += softmax.c
 SRCS += utils.c
+SRCS += TFT/fthr/img_1_rgb565.c
+SRCS += TFT/fthr/SansSerif16x16.c
 
 # Where to find source files for this test
 VPATH  = .
 VPATH += ./Camera/
 VPATH += ../Common
 VPATH += ./Camera/src
+VPATH += TFT/fthr/
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
 # Where to find header files for this test
@@ -94,12 +96,16 @@ IPATH  = .
 IPATH += ./Camera/
 IPATH += ../Common
 IPATH += ./Camera/include
+IPATH += TFT/evkit/
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
 PROJ_CFLAGS+=-DARM_MATH_CM4
 
+ifeq "$(BOARD)" "EvKit_V1"
+PROJ_CFLAGS+=-DTFT_ENABLE
+endif
 # Enable all warnings
 PROJ_CFLAGS+=-Wall
 

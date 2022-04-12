@@ -363,12 +363,31 @@ uint32_t MXC_SDHC_RevA_Get_Response32_Auto(mxc_sdhc_reva_regs_t *sdhc)
 /* ************************************************************************** */
 void MXC_SDHC_RevA_Get_Response128(mxc_sdhc_reva_regs_t *sdhc, unsigned char *response)
 {
-    uint32_t* p = (uint32_t*) response;
-    
-    *p++ = sdhc->resp[0];
-    *p++ = sdhc->resp[1];
-    *p++ = sdhc->resp[2];
-    *p = sdhc->resp[3];
+    uint32_t tmp;
+
+    tmp = sdhc->resp[0];
+    response[0] = tmp;
+    response[1] = tmp >> 8;
+    response[2] = tmp >> 16;
+    response[3] = tmp >> 24;
+
+    tmp = sdhc->resp[1];
+    response[4] = tmp;
+    response[5] = tmp >> 8;
+    response[6] = tmp >> 16;
+    response[7] = tmp >> 24;
+
+    tmp = sdhc->resp[2];
+    response[8] = tmp;
+    response[9] = tmp >> 8;
+    response[10] = tmp >> 16;
+    response[11] = tmp >> 24;
+
+    tmp = sdhc->resp[3];
+    response[12] = tmp;
+    response[13] = tmp >> 8;
+    response[14] = tmp >> 16;
+    response[15] = tmp >> 24;
 }
 
 /* ************************************************************************** */

@@ -168,13 +168,13 @@ int camera_set_frame_info(int width, int height, pixformat_t pixformat);
 // Setup the camera resolution, pixel format, expand bits option, fifo byte mode and dma option.
 int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode, dmamode_t dma_mode, int dma_channel);
 
-// Set the sensor contrast level (from -3 to +3).
+// Set the sensor contrast level (from -2 to +2).
 int camera_set_contrast(int level);
 
-// Set the sensor brightness level (from -3 to +3).
+// Set the sensor brightness level (from -2 to +2).
 int camera_set_brightness(int level);
 
-// Set the sensor saturation level (from -3 to +3).
+// Set the sensor saturation level (from -2 to +2).
 int camera_set_saturation(int level);
 
 // Set the sensor AGC gain ceiling.

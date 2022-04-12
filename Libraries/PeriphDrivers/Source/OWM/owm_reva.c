@@ -44,8 +44,8 @@
 #define MXC_OWM_CLK_FREQ    1000000 //1-Wire requires 1MHz clock
 
 /* **** Globals **** */
-int LastDiscrepancy;
-int LastDeviceFlag;
+static int LastDiscrepancy;
+static int LastDeviceFlag;
 
 /* **** Functions **** */
 static uint8_t CalculateCRC8(uint8_t* data, int len);

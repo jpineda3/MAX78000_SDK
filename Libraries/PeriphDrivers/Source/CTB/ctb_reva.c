@@ -311,8 +311,8 @@ void MXC_CTB_RevA_Handler(mxc_trng_reva_regs_t* trng)
             break;
         }
     }
-    
-    if(features == 0) { /* interrupt caused by TRNG */
+
+    if((features == 0) && MXC_CTB_Callbacks[RNG_ID]) { /* interrupt caused by TRNG */
         // if this is last block, disable interrupt before reading MXC_TRNG->data
         if(TRNG_maxLength <= TRNG_count+4) {
             trng->ctrl &= ~MXC_F_TRNG_REVA_CTRL_RND_IE;
@@ -675,7 +675,7 @@ int MXC_CTB_RevA_CRC_Compute(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_crc_req
     enabled = MXC_CTB_CheckInterrupts();
     MXC_CTB_DisableInt();
     
-    ctb_regs->ctrl |= MXC_F_CTB_REVA_CTRL_RST;
+    ctb_regs->crc_val = 0xFFFFFFFF; // Preset CRC value to all 1's
     
     dma_req.sourceBuffer = req->dataBuffer;
     dma_req.length = req->dataLen;
@@ -707,7 +707,7 @@ void MXC_CTB_RevA_CRC_ComputeAsync(mxc_ctb_reva_regs_t* ctb_regs, mxc_ctb_reva_c
     saved_requests[DMA_ID] = req;
     dma_cb_func = DMA_CALLBACK_CRC;
     
-    ctb_regs->ctrl |= MXC_F_CTB_REVA_CTRL_RST;
+    ctb_regs->crc_val = 0xFFFFFFFF;  // Preset CRC value to all 1's
     
     dma_req.sourceBuffer = req->dataBuffer;
     

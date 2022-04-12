@@ -144,8 +144,8 @@ int MXC_UART_ReadyForSleep(mxc_uart_regs_t* uart)
 int MXC_UART_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clock_t clock)
 {
     int freq;
-    int mod = 0;
-    int clkdiv = 0;
+    unsigned mod = 0;
+    unsigned clkDiv = 0;
 
     if (MXC_UART_GET_IDX (uart) < 0) {
         return E_BAD_PARAM;
@@ -158,7 +158,7 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clo
         
         switch (clock) {
             case MXC_UART_IBRO_CLK:
-                clkdiv = ((IBRO_FREQ) / baud);
+                clkDiv = ((IBRO_FREQ) / baud);
                 mod = ((IBRO_FREQ) % baud);
                 break;
 
@@ -171,10 +171,10 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clo
                 uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
                 uart->ctrl |= MXC_F_UART_CTRL_FDM;
                 if(baud == 9600) {
-                    clkdiv = 7;
+                    clkDiv = 7;
                     mod = 0;
                 } else {
-                    clkdiv = ((ERTCO_FREQ * 2) / baud);
+                    clkDiv = ((ERTCO_FREQ * 2) / baud);
                     mod = ((ERTCO_FREQ * 2) % baud);
                 }
 
@@ -189,16 +189,17 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clo
                 return E_BAD_PARAM;
         }
 
-        if(!clkdiv || mod > (baud/2)) {
-            clkdiv++;
+        if(!clkDiv || mod > (baud/2)) {
+            clkDiv++;
         }
-        uart->clkdiv = clkdiv;
+        uart->clkdiv = clkDiv;
 
         freq = MXC_UART_GetFrequency (uart);
     } 
     else {
         //return MXC_UART_RevB_SetFrequency ((mxc_uart_revb_regs_t*) uart, baud, clock);
-		int clkDiv = 0, mod = 0;
+		clkDiv = 0;
+        mod = 0;
 		if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
 			return E_BAD_PARAM;
 		}

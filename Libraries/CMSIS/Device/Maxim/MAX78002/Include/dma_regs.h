@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -107,7 +107,7 @@ typedef struct {
 /**
  * @ingroup    dma_registers
  * @defgroup   DMA_Register_Offsets Register Offsets
- * @brief      DMA Peripheral Register Offsets from the DMA Base Peripheral Address. 
+ * @brief      DMA Peripheral Register Offsets from the DMA Base Peripheral Address.
  * @{
  */
  #define MXC_R_DMA_CTRL                     ((uint32_t)0x00000100UL) /**< Offset from DMA Base Address: <tt> 0x0100</tt> */ 
@@ -228,6 +228,10 @@ typedef struct {
  #define MXC_S_DMA_CTRL_REQUEST_ADC                     (MXC_V_DMA_CTRL_REQUEST_ADC << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_ADC Setting */
  #define MXC_V_DMA_CTRL_REQUEST_I2C2RX                  ((uint32_t)0xAUL) /**< CTRL_REQUEST_I2C2RX Value */
  #define MXC_S_DMA_CTRL_REQUEST_I2C2RX                  (MXC_V_DMA_CTRL_REQUEST_I2C2RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2C2RX Setting */
+ #define MXC_V_DMA_CTRL_REQUEST_CSI2RX                  ((uint32_t)0xCUL) /**< CTRL_REQUEST_CSI2RX Value */
+ #define MXC_S_DMA_CTRL_REQUEST_CSI2RX                  (MXC_V_DMA_CTRL_REQUEST_CSI2RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_CSI2RX Setting */
+ #define MXC_V_DMA_CTRL_REQUEST_PCIFRX                  ((uint32_t)0xDUL) /**< CTRL_REQUEST_PCIFRX Value */
+ #define MXC_S_DMA_CTRL_REQUEST_PCIFRX                  (MXC_V_DMA_CTRL_REQUEST_PCIFRX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_PCIFRX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_UART2RX                 ((uint32_t)0xEUL) /**< CTRL_REQUEST_UART2RX Value */
  #define MXC_S_DMA_CTRL_REQUEST_UART2RX                 (MXC_V_DMA_CTRL_REQUEST_UART2RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART2RX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_SPI0RX                  ((uint32_t)0xFUL) /**< CTRL_REQUEST_SPI0RX Value */

@@ -49,6 +49,7 @@ MISC_DRIVERS_DIR=$(BOARD_DIR)/../../../MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
+VPATH += $(BOARD_DIR)/../Source # Add core BSP source directory
 VPATH += $(MISC_DRIVERS_DIR)
 VPATH += $(MISC_DRIVERS_DIR)/Camera
 VPATH += $(MISC_DRIVERS_DIR)/LED
@@ -57,6 +58,7 @@ VPATH += $(MISC_DRIVERS_DIR)/PushButton
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
+IPATH += $(BOARD_DIR)/../Include # Add core BSP include directory
 IPATH += $(MISC_DRIVERS_DIR)
 IPATH += $(MISC_DRIVERS_DIR)/Camera
 IPATH += $(MISC_DRIVERS_DIR)/LED

@@ -46,18 +46,17 @@
 #define SDA_PORT    SCCB_SDA_PORT
 #define SDA_PIN     SCCB_SDA_PIN
 
-//
 #define GPIO_SET(port, mask)    (port)->out_set = mask
 #define GPIO_CLR(port, mask)    (port)->out_clr = mask
 #define GPIO_GET(port, mask)    ((port)->in & mask)
 
-//
 #define GPIO_IN(port,  mask)    (port)->outen_clr = mask
 #define GPIO_OUT(port, mask)    (port)->outen_set = mask
 
 // SCL
 #define SCL_HIGH()      GPIO_SET(SCL_PORT, SCL_PIN)
 #define SCL_LOW()       GPIO_CLR(SCL_PORT, SCL_PIN)
+
 // SDA
 #define SDA_HIGH()      GPIO_SET(SDA_PORT, SDA_PIN)
 #define SDA_LOW()       GPIO_CLR(SDA_PORT, SDA_PIN)
@@ -65,7 +64,7 @@
 #define SDA_OUT()       GPIO_OUT(SDA_PORT, SDA_PIN)
 #define SDA_GET()       GPIO_GET(SDA_PORT, SDA_PIN)
 
-#define WAIT_US         1
+#define WAIT_US         4
 #define DELAY_US(us)    MXC_Delay(us)
 
 static const mxc_gpio_cfg_t gpio_cfg_scl =   { SCL_PORT, SCL_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};

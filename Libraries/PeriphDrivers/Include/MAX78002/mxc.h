@@ -55,9 +55,11 @@
 #include "led.h"
 #include "pb.h"
 #ifdef BOARD_EVKIT_V1
-#include "tft_ssd2119.h"
+#include "adafruit_3315_tft.h"
+#include "adafruit_3315_touch.h"
 #endif
-#include "tsc2046.h"
+
+
 
 /*
  *  Peripheral Driver Includes

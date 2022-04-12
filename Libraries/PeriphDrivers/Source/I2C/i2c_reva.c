@@ -673,12 +673,12 @@ void MXC_I2C_RevA_DisablePreload(mxc_i2c_reva_regs_t* i2c)
 
 void MXC_I2C_RevA_EnableGeneralCall (mxc_i2c_reva_regs_t* i2c)
 {
-    i2c->txctrl0 &= ~MXC_F_I2C_REVA_TXCTRL0_GC_ADDR_FLUSH_DIS;
+    i2c->ctrl |= MXC_F_I2C_REVA_CTRL_GC_ADDR_EN;
 }
 
 void MXC_I2C_RevA_DisableGeneralCall (mxc_i2c_reva_regs_t* i2c)
 {
-    i2c->txctrl0 |= MXC_F_I2C_REVA_TXCTRL0_GC_ADDR_FLUSH_DIS;
+    i2c->ctrl &= ~MXC_F_I2C_REVA_CTRL_GC_ADDR_EN;
 }
 
 void MXC_I2C_RevA_SetTimeout (mxc_i2c_reva_regs_t* i2c, unsigned int timeout)

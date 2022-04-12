@@ -157,7 +157,7 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clo
         uart->osr = 5;
         
         switch (clock) {
-            case MXC_UART_APB_CLK:
+            case MXC_UART_IBRO_CLK:
                 clkdiv = ((IBRO_FREQ) / baud);
                 mod = ((IBRO_FREQ) % baud);
                 break;

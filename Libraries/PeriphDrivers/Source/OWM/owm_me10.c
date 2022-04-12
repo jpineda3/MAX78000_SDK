@@ -47,8 +47,6 @@
 #define MXC_OWM_CLK_FREQ    1000000 //1-Wire requires 1MHz clock
 
 /* **** Globals **** */
-int LastDiscrepancy;
-int LastDeviceFlag;
 
 /* **** Functions **** */
 

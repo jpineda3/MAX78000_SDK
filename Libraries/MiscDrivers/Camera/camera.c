@@ -500,6 +500,11 @@ int camera_set_vflip(int enable)
     return camera.set_vflip(enable);
 }
 
+int camera_set_colorbar(int enable)
+{
+    return camera.set_colorbar(enable);
+}
+
 int camera_start_capture_image(void)
 {
     int ret = STATUS_OK;
@@ -593,3 +598,14 @@ stream_stat_t* get_camera_stream_statistic(void)
 {
     return &statistic;
 }
+
+int camera_set_contrast(int level)
+{
+    return camera.set_contrast(level);
+}
+
+int camera_set_brightness(int level)
+{
+    return camera.set_brightness(level);
+}
+

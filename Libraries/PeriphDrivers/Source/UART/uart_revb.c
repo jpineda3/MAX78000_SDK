@@ -115,7 +115,7 @@ int MXC_UART_RevB_ReadyForSleep (mxc_uart_revb_regs_t* uart)
 
 int MXC_UART_RevB_SetFrequency (mxc_uart_revb_regs_t* uart, unsigned int baud, mxc_uart_revb_clock_t clock)
 {  
-    int clkDiv = 0, mod = 0;
+    unsigned clkDiv = 0, mod = 0;
     if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
@@ -999,7 +999,7 @@ int MXC_UART_RevB_TransactionDMA (mxc_uart_revb_req_t* req)
     
     MXC_UART_DisableInt ((mxc_uart_regs_t*) (req->uart), 0xFFFFFFFF);
     MXC_UART_ClearFlags ((mxc_uart_regs_t*) (req->uart), 0xFFFFFFFF);
-    
+
     MXC_UART_ClearTXFIFO ((mxc_uart_regs_t*) (req->uart));
     MXC_UART_ClearRXFIFO ((mxc_uart_regs_t*) (req->uart));
     

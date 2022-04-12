@@ -34,6 +34,10 @@ var group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e =
     [ "MXC_F_CSI2_RX_EINT_VFF_IE_OUTSYNC_POS", "group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e.html#ga76a2727577c800f381349eb6c6c3ed2b", null ],
     [ "MXC_F_CSI2_RX_EINT_VFF_IE_OVERRUN", "group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e.html#gaa0ef3e9244376109b54efc519cb7d8ca", null ],
     [ "MXC_F_CSI2_RX_EINT_VFF_IE_OVERRUN_POS", "group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e.html#gaebef801d3dce11fef8a2d506bd4b5ad6", null ],
+    [ "MXC_F_CSI2_RX_EINT_VFF_IE_RAW_AHBERR", "group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e.html#gaceedc472d33663a0a2bb9331d0ad53bc", null ],
+    [ "MXC_F_CSI2_RX_EINT_VFF_IE_RAW_AHBERR_POS", "group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e.html#ga6a4820af6d5d69687ec1d9a0e9398788", null ],
+    [ "MXC_F_CSI2_RX_EINT_VFF_IE_RAW_OVR", "group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e.html#gabcc473dcbbd2b233b6201ec5d5bb0b5c", null ],
+    [ "MXC_F_CSI2_RX_EINT_VFF_IE_RAW_OVR_POS", "group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e.html#ga2018d9fb414c049ebc7b7e2d925b02d0", null ],
     [ "MXC_F_CSI2_RX_EINT_VFF_IE_UNDERRUN", "group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e.html#ga0e24176a9edd47a7247df171648ca345", null ],
     [ "MXC_F_CSI2_RX_EINT_VFF_IE_UNDERRUN_POS", "group___c_s_i2___r_x___e_i_n_t___v_f_f___i_e.html#ga4828882cdbd45d94abe9037d7819e2e9", null ]
 ];

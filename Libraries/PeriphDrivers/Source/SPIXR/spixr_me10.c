@@ -66,7 +66,7 @@ int MXC_SPIXR_WriteTXFIFO (uint8_t* buf, int len)
 /* ************************************************************************* */
 void MXC_SPIXR_SetSS (void)
 {
-    MXC_SPIXR_RevA_SetSS((mxc_spixr_reva_regs_t*) MXC_SPIXR, 1);
+    MXC_SPIXR_RevA_SetSS((mxc_spixr_reva_regs_t*) MXC_SPIXR, 0);
 }
 
 /* ************************************************************************* */

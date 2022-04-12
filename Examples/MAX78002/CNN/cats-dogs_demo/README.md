@@ -15,13 +15,13 @@ Navigate directory where **cats-dogs_demo** software is located and build the pr
 
 ```bash
 $ cd /Examples/MAX78002/CNN/cats-dogs_demo
-$ make
+$ make -r
 ```
 
 If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
 
 ```bash
-$ make distclean
+$ make -r distclean
 ```
 
 
@@ -34,21 +34,26 @@ Connect PICO adapter to JH8 SWD header.
 If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
 
 ```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/MAX78002.elf reset exit"
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf reset exit"
 ```
 
 If using Linux, perform this step:
 
 ```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78002.cfg -c "program build/MAX78002.elf verify reset exit"
+./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78002.cfg -c "program build/max78002.elf verify reset exit"
 ```
 
 ### MAX78002 EVKIT operations
 
-*   If using camera and TFT LCD, connect OVM7692 camera board directly (without 90 degree adapter) to 'J4 Camera' header facing out and place TFT display on the display header.
-*   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
-*   Place jumper P0\_0 and P0\_1 on UART\_0\_EN header JP23.
-*   Open a serial port application on the PC and connect to Ev-Kit's console UART at 115200, 8-N-1 configuration.
+* If using camera and TFT LCD, connect OVM7692 camera board using the cable and adapter board to 'JH17 Camera' header and place TFT display on the display header.
+
+* **Make sure to set the JP41 DVP CAM Power to ON position**.
+
+  <img src="Resources/camera-jumper.jpg" style="zoom:50%;" />
+
+* Connect the DC 5V supply to MAX78002 evkit J1. Connect PICO adapter to JH8 SWD header. Turn the power switch SW1 to on position.
+
+* To see debug messages, you can optionally connect a USB cable to CN2. Open a serial port application on the PC and connect to Ev-Kit's console UART at 115200, 8-N-1 configuration.
 
 This demo is operated in two modes: Real-time data using Camera module or using sample image header file in offline mode.
 

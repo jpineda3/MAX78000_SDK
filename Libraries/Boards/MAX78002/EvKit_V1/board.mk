@@ -35,21 +35,41 @@ ifeq "$(BOARD_DIR)" ""
 $(error BOARD_DIR must be set)
 endif
 
-# Source files for this test (add path to VPATH below)
+# Source files for this application (add path to VPATH below)
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
-SRCS += tft_ssd2119.c
-SRCS += tsc2046.c
+SRCS += adafruit_3315_tft.c
+SRCS += adafruit_3315_touch.c
 SRCS += camera.c
+SRCS += mipi_camera.c
+ifeq "$(CAMERA)" "OV5640"
+SRCS += ov5640.c
+PROJ_CFLAGS+=-DCAMERA_OV5640
+else ifeq "$(CAMERA)" "HM01B0"
+SRCS += hm01b0.c
+PROJ_CFLAGS+=-DCAMERA_HM01B0
+else ifeq "$(CAMERA)" "HM0360"
+SRCS += hm0360.c
+PROJ_CFLAGS+=-DCAMERA_HM0360
+else ifeq "$(CAMERA)" "OV5642"
+SRCS += ov5642.c
+PROJ_CFLAGS+=-DCAMERA_OV5642
+else ifeq "$(CAMERA)" "OV7692"
 SRCS += ov7692.c
+PROJ_CFLAGS+=-DCAMERA_OV7692
+else ifeq "$(CAMERA)" ""
+SRCS += ov7692.c
+PROJ_CFLAGS+=-DCAMERA_OV7692
+endif
 SRCS += sccb.c
 
 MISC_DRIVERS_DIR=$(BOARD_DIR)/../../../MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
+VPATH += $(BOARD_DIR)/../Source # Add core BSP source directory
 VPATH += $(MISC_DRIVERS_DIR)
 VPATH += $(MISC_DRIVERS_DIR)/Camera
 VPATH += $(MISC_DRIVERS_DIR)/Display
@@ -60,6 +80,7 @@ VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
+IPATH += $(BOARD_DIR)/../Include # Add core BSP include directory
 IPATH += $(MISC_DRIVERS_DIR)
 IPATH += $(MISC_DRIVERS_DIR)/Camera
 IPATH += $(MISC_DRIVERS_DIR)/Display

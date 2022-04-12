@@ -22,6 +22,7 @@ var searchData=
   ['vfifo_5fraw_5fbuf1_5faddr',['vfifo_raw_buf1_addr',['../group__csi2__registers.html#a2d67d43c2678bab3673377816b11c367',1,'mxc_csi2_regs_t']]],
   ['vfifo_5fraw_5fctrl',['vfifo_raw_ctrl',['../group__csi2__registers.html#adcfe2a182375e2b301378e136c366f84',1,'mxc_csi2_regs_t']]],
   ['vfifo_5fsts',['vfifo_sts',['../group__csi2__registers.html#a406c39d40ca8ff54c2972af2fa324cbb',1,'mxc_csi2_regs_t']]],
+  ['virtual_5fchannel',['virtual_channel',['../group__csi2.html#a0125eb348f85a39c60fb2da1ca16622e',1,'mxc_csi2_vfifo_cfg_t']]],
   ['vrego_5fa',['vrego_a',['../group__simo__registers.html#a4f412b1af9b414610392fe33c2277932',1,'mxc_simo_regs_t']]],
   ['vrego_5fb',['vrego_b',['../group__simo__registers.html#a80dc4426800f8656aa8883cf6cfd6155',1,'mxc_simo_regs_t']]],
   ['vrego_5fc',['vrego_c',['../group__simo__registers.html#a7ebc6ecc925b7a7011498c020077948d',1,'mxc_simo_regs_t']]],

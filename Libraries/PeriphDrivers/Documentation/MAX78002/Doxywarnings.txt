@@ -70,31 +70,26 @@
   parameter 'ref'
   parameter 'ext_ref'
   parameter 'temp_k'
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:182: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_CTR_DisableInt()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:175: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_CTR_EnableInt()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:126: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_DisableLanes(int lanes)
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:130: warning: The following parameters of MXC_CSI2_DisableLanes(int lanes) are not documented:
-  parameter 'lanes'
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:189: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_DPHY_EnableInt(uint32_t flags)
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:193: warning: The following parameters of MXC_CSI2_DPHY_EnableInt(uint32_t flags) are not documented:
-  parameter 'flags'
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:119: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_EnableLanes(int lanes)
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:123: warning: The following parameters of MXC_CSI2_EnableLanes(int lanes) are not documented:
-  parameter 'lanes'
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:154: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_GetDatatype()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:140: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_GetVirtualChannel()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:81: warning: argument 'portMask' of command @param is not found in the argument list of MXC_CSI2_Init()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:147: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_SetDatatype()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:133: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_SetVirtualChannel(int VC)
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:137: warning: The following parameters of MXC_CSI2_SetVirtualChannel(int VC) are not documented:
-  parameter 'VC'
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:223: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_ULPS_Config()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:223: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_ULPS_Config()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:223: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_ULPS_Config()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:168: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_VFIFO_DisableInt()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:161: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_VFIFO_EnableInt()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:231: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSI2_VFIFO_Stop()
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:238: warning: argument 'cfg' of command @param is not found in the argument list of MXC_CSIS_VFIFO_Status()
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:548: warning: argument 'flags' of command @param is not found in the argument list of MXC_CSI2_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size)
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:552: warning: The following parameters of MXC_CSI2_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size) are not documented:
+  parameter 'dst_addr'
+  parameter 'byte_cnt'
+  parameter 'burst_size'
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:405: warning: argument 'flags' of command @param is not found in the argument list of MXC_CSI2_VFIFO_Config(mxc_csi2_vfifo_cfg_t *cfg)
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:409: warning: The following parameters of MXC_CSI2_VFIFO_Config(mxc_csi2_vfifo_cfg_t *cfg) are not documented:
+  parameter 'cfg'
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:476: warning: argument 'payload0' of command @param is not found in the argument list of MXC_CSI2_VFIFO_SetDMAMode(mxc_csi2_dma_mode_t dma_mode)
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:476: warning: argument 'payload1' of command @param is not found in the argument list of MXC_CSI2_VFIFO_SetDMAMode(mxc_csi2_dma_mode_t dma_mode)
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:482: warning: The following parameters of MXC_CSI2_VFIFO_SetDMAMode(mxc_csi2_dma_mode_t dma_mode) are not documented:
+  parameter 'dma_mode'
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:494: warning: argument 'payload0' of command @param is not found in the argument list of MXC_CSI2_VFIFO_SetRAWFormat(mxc_csi2_raw_format_t raw_format)
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:494: warning: argument 'payload1' of command @param is not found in the argument list of MXC_CSI2_VFIFO_SetRAWFormat(mxc_csi2_raw_format_t raw_format)
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:500: warning: The following parameters of MXC_CSI2_VFIFO_SetRAWFormat(mxc_csi2_raw_format_t raw_format) are not documented:
+  parameter 'raw_format'
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:485: warning: argument 'payload0' of command @param is not found in the argument list of MXC_CSI2_VFIFO_SetRGBType(mxc_csi2_rgb_type_t rgb_type)
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:485: warning: argument 'payload1' of command @param is not found in the argument list of MXC_CSI2_VFIFO_SetRGBType(mxc_csi2_rgb_type_t rgb_type)
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/csi2.h:491: warning: The following parameters of MXC_CSI2_VFIFO_SetRGBType(mxc_csi2_rgb_type_t rgb_type) are not documented:
+  parameter 'rgb_type'
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:278: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask)
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI87/MAX78002/Libraries/PeriphDrivers/Include/MAX78002/gpio.h:282: warning: The following parameters of MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask) are not documented:
   parameter 'port'

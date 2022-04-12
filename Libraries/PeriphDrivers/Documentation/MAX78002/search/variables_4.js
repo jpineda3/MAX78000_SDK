@@ -22,6 +22,7 @@ var searchData=
   ['er_5fint_5fen',['er_int_en',['../group__sdhc__registers.html#aebdf5ded6e201ed90728e0d9e431adec',1,'mxc_sdhc_regs_t']]],
   ['er_5fint_5fsignal',['er_int_signal',['../group__sdhc__registers.html#a8f74476ef3b59868e4ccdc3ca958e8ac',1,'mxc_sdhc_regs_t']]],
   ['er_5fint_5fstat',['er_int_stat',['../group__sdhc__registers.html#ac2f8e690a4a1faea18982e663017cc2e',1,'mxc_sdhc_regs_t']]],
+  ['err_5fdet_5fen',['err_det_en',['../group__csi2.html#a6ca9e7980ba9b85a7b651f755db9da50',1,'mxc_csi2_vfifo_cfg_t']]],
   ['eventen',['eventen',['../group__gcr__registers.html#abb33e43ce55ab7142a4ea3ebc11b1e24',1,'mxc_gcr_regs_t']]],
   ['ext_5fpu_5fmode',['ext_pu_mode',['../group__owm.html#aa6aa798684aee445522660fa96b64fd9',1,'mxc_owm_cfg_t']]],
   ['extsetup',['extsetup',['../group__i2s__registers.html#aaedbec3ea04f59a5a08eede9decb5ecc',1,'mxc_i2s_regs_t']]]

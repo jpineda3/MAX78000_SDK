@@ -34,7 +34,7 @@
 ################################################################################
 
 # This is the name of the build output file
-PROJECT=librtos
+override PROJECT=librtos
 
 ifeq "$(TARGET)" ""
 $(error TARGET must be specified)

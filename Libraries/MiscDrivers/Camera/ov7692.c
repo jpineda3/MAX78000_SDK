@@ -103,7 +103,7 @@ static int init(void)
 {
     int ret = 0;
 
-    g_slv_addr = sccb_scan();
+    g_slv_addr = 0x3c;
 
     if (g_slv_addr == -1) {
         return -1;
@@ -353,110 +353,79 @@ static int set_windowing(int width, int height, int hsize, int vsize)
 static int set_contrast(int level)
 {
     int ret = 0;
-#if 0
 
     switch (level) {
-    case -4:
-        level =   0;
-        break;
-
-    case -3:
-        level =  30;
-        break;
-
     case -2:
-        level =  60;
+        ret = cambus_writeb(0xd5, 0x20);
+        ret = cambus_writeb(0xd4, 0x18);
+        ret = cambus_writeb(0xd3, 0x48);
+        ret = cambus_writeb(0xd2, 0x04);
         break;
-
     case -1:
-        level =  90;
+        ret = cambus_writeb(0xd5, 0x20);
+        ret = cambus_writeb(0xd4, 0x1c);
+        ret = cambus_writeb(0xd3, 0x20);
+        ret = cambus_writeb(0xd2, 0x04);
         break;
-
-    case  0:
-        level = 120;
+    case 0: // default
+        ret = cambus_writeb(0xd5, 0x20);
+        ret = cambus_writeb(0xd4, 0x20);
+        ret = cambus_writeb(0xd3, 0x00);
+        ret = cambus_writeb(0xd2, 0x04);
         break;
-
-    case  1:
-        level = 150;
+    case 1:
+        ret = cambus_writeb(0xd5, 0x20);
+        ret = cambus_writeb(0xd4, 0x24);
+        ret = cambus_writeb(0xd3, 0x00);
+        ret = cambus_writeb(0xd2, 0x04);
         break;
-
-    case  2:
-        level = 180;
+    case 2:
+        ret = cambus_writeb(0xd5, 0x20);
+        ret = cambus_writeb(0xd4, 0x28);
+        ret = cambus_writeb(0xd3, 0x00);
+        ret = cambus_writeb(0xd2, 0x04);
         break;
-
-    case  3:
-        level = 210;
-        break;
-
-    case  4:
-        level = 255;
-        break;
-
     default:
         return -1;
     }
 
-    ret = cambus_writeb(REG_CONTRAS, level);
-#endif
     return ret;
 }
 
 static int set_brightness(int level)
 {
     int ret = 0;
-#if 0
 
     switch (level) {
-    case -4:
-        level =   0;
-        break;
-
-    case -3:
-        level =  30;
-        break;
-
     case -2:
-        level =  60;
-        break;
-
+        ret = cambus_writeb(0x24, 0x70);
+        ret = cambus_writeb(0x25, 0x60);
+        ret = cambus_writeb(0x26, 0xa2);
+        break; 
     case -1:
-        level =  90;
+        ret = cambus_writeb(0x24, 0x78);
+        ret = cambus_writeb(0x25, 0x70);
+        ret = cambus_writeb(0x26, 0xa2);
         break;
-
-    case  0:
-        level = 120;
+    case 0: // default
+        ret = cambus_writeb(0x24, 0x86);
+        ret = cambus_writeb(0x25, 0x76);
+        ret = cambus_writeb(0x26, 0xb3);
         break;
-
-    case  1:
-        level = 150;
+    case 1:
+        ret = cambus_writeb(0x24, 0xa0);
+        ret = cambus_writeb(0x25, 0x98);
+        ret = cambus_writeb(0x26, 0xc4);
         break;
-
-    case  2:
-        level = 180;
+    case 2:
+        ret = cambus_writeb(0x24, 0xa8);
+        ret = cambus_writeb(0x25, 0xa0);
+        ret = cambus_writeb(0x26, 0xc4);
         break;
-
-    case  3:
-        level = 210;
-        break;
-
-    case  4:
-        level = 255;
-        break;
-
-    default:
+     default:
         return -1;
     }
 
-    // update REG_COM8
-    ret = cambus_readb(REG_COM8, &reg);
-    reg &= ~COM8_AEC;
-    ret = cambus_writeb(REG_COM8, reg);
-
-    // update REG_BRIGHT
-    level &= 0xFF;
-    reg = (level > 127) ? (level & 0x7f) : ((128 - level) | 0x80);
-    ret = cambus_writeb(REG_BRIGHT, reg);
-#endif
     return ret;
 }
 
@@ -470,20 +439,60 @@ static int set_saturation(int level)
 static int set_gainceiling(gainceiling_t gainceiling)
 {
     int ret = 0;
-#if 0
-    ret = cambus_readb(REG_COM9, &reg);
+    uint8_t reg;
 
-    // Set gain ceiling
-    reg = COM9_SET_AGC(reg, gainceiling);
-    ret |= cambus_writeb(REG_COM9, reg);
-#endif
+    ret = cambus_readb(REG14, &reg);
+    reg &= 0x8f; // clear bits [6:4]
+
+    switch (gainceiling) {
+    case GAINCEILING_2X:
+        reg |= 0 << 4;
+        ret |= cambus_writeb(REG14, reg);
+        break; 
+    case GAINCEILING_4X:
+        reg |= 1 << 4;
+        ret |= cambus_writeb(REG14, reg);
+        break;
+    case GAINCEILING_8X:
+        reg |= 2 << 4;
+        ret |= cambus_writeb(REG14, reg);
+        break;
+    case GAINCEILING_16X: // default
+        reg |= 3 << 4;
+        ret |= cambus_writeb(REG14, reg);
+        break;
+    case GAINCEILING_32X:
+        reg |= 4 << 4;
+        ret |= cambus_writeb(REG14, reg);
+    case GAINCEILING_64X:
+        reg |= 5 << 4;
+        ret |= cambus_writeb(REG14, reg);
+    case GAINCEILING_128X:
+        reg |= 6 << 4;
+        ret |= cambus_writeb(REG14, reg);
+        break;
+     default:
+        return -1;
+    }
+
     return ret;
 }
 
 static int set_colorbar(int enable)
 {
     int ret = 0;
+    uint8_t reg;
 
+    ret = cambus_readb(REG82, &reg);
+
+    if (enable) {
+        reg |= 0x0c; // enable constant colorbar
+    }
+    else {
+        reg &= 0xf3;  // disable constant colorbar
+    }
+
+    ret |= cambus_writeb(REG82, reg);
     return ret;
 }
 

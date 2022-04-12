@@ -2046,34 +2046,37 @@
      <size>32</size>
      <fields>
       <field>
-       <name>PAD_CDRX_L0</name>
-       <description>PAD_CDRX_L0.</description>
+       <name>SRC</name>
+       <description>Control Source.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L1</name>
-       <description>PAD_CDRX_L1.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L2</name>
-       <description>PAD_CDRX_L2.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L3</name>
-       <description>PAD_CDRX_L3.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L4</name>
-       <description>PAD_CDRX_L4.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>PAD_CDRX_L0</name>
+         <description>PAD_CDRX_L0.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L1</name>
+         <description>PAD_CDRX_L1.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L2</name>
+         <description>PAD_CDRX_L2.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L3</name>
+         <description>PAD_CDRX_L3.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L4</name>
+         <description>PAD_CDRX_L4.</description>
+         <value>4</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -2084,34 +2087,37 @@
      <size>32</size>
      <fields>
       <field>
-       <name>PAD_CDRX_L0</name>
-       <description>PAD_CDRX_L0.</description>
+       <name>SRC</name>
+       <description>Control Source.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L1</name>
-       <description>PAD_CDRX_L1.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L2</name>
-       <description>PAD_CDRX_L2.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L3</name>
-       <description>PAD_CDRX_L3.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L4</name>
-       <description>PAD_CDRX_L4.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>PAD_CDRX_L0</name>
+         <description>PAD_CDRX_L0.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L1</name>
+         <description>PAD_CDRX_L1.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L2</name>
+         <description>PAD_CDRX_L2.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L3</name>
+         <description>PAD_CDRX_L3.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L4</name>
+         <description>PAD_CDRX_L4.</description>
+         <value>4</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -2122,34 +2128,37 @@
      <size>32</size>
      <fields>
       <field>
-       <name>PAD_CDRX_L0</name>
-       <description>PAD_CDRX_L0.</description>
+       <name>SRC</name>
+       <description>Control Source.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L1</name>
-       <description>PAD_CDRX_L1.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L2</name>
-       <description>PAD_CDRX_L2.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L3</name>
-       <description>PAD_CDRX_L3.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L4</name>
-       <description>PAD_CDRX_L4.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>PAD_CDRX_L0</name>
+         <description>PAD_CDRX_L0.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L1</name>
+         <description>PAD_CDRX_L1.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L2</name>
+         <description>PAD_CDRX_L2.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L3</name>
+         <description>PAD_CDRX_L3.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L4</name>
+         <description>PAD_CDRX_L4.</description>
+         <value>4</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -2160,34 +2169,37 @@
      <size>32</size>
      <fields>
       <field>
-       <name>PAD_CDRX_L0</name>
-       <description>PAD_CDRX_L0.</description>
+       <name>SRC</name>
+       <description>Control Source.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L1</name>
-       <description>PAD_CDRX_L1.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L2</name>
-       <description>PAD_CDRX_L2.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L3</name>
-       <description>PAD_CDRX_L3.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L4</name>
-       <description>PAD_CDRX_L4.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>PAD_CDRX_L0</name>
+         <description>PAD_CDRX_L0.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L1</name>
+         <description>PAD_CDRX_L1.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L2</name>
+         <description>PAD_CDRX_L2.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L3</name>
+         <description>PAD_CDRX_L3.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L4</name>
+         <description>PAD_CDRX_L4.</description>
+         <value>4</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -2198,34 +2210,37 @@
      <size>32</size>
      <fields>
       <field>
-       <name>PAD_CDRX_L0</name>
-       <description>PAD_CDRX_L0.</description>
+       <name>SRC</name>
+       <description>Control Source.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L1</name>
-       <description>PAD_CDRX_L1.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L2</name>
-       <description>PAD_CDRX_L2.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L3</name>
-       <description>PAD_CDRX_L3.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PAD_CDRX_L4</name>
-       <description>PAD_CDRX_L4.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>PAD_CDRX_L0</name>
+         <description>PAD_CDRX_L0.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L1</name>
+         <description>PAD_CDRX_L1.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L2</name>
+         <description>PAD_CDRX_L2.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L3</name>
+         <description>PAD_CDRX_L3.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>PAD_CDRX_L4</name>
+         <description>PAD_CDRX_L4.</description>
+         <value>4</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -3010,6 +3025,28 @@
        <description>RAW format.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>RGRG_GBGB</name>
+         <description>RGRG GBGB</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>GRGR_BGBG</name>
+         <description>GRGR BGBG</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>GBGB_RGRG</name>
+         <description>GBGB RGRG</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>BGBG_GRGR</name>
+         <description>BGBG GRGR</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
       </field>
       <field>
        <name>RGB_TYP</name>
@@ -3283,6 +3320,18 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
+       <name>RAW_OVR</name>
+       <description>Raw FIFO Overrun Interrupt Enable</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAW_AHBERR</name>
+       <description>Raw AHB Error Interrupt Enable</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>FNEMP_MD</name>
        <description>Video FIFO not empty detection mode</description>
        <bitOffset>16</bitOffset>
@@ -3400,13 +3449,13 @@
       </field>
       <field>
        <name>RAW_OVR</name>
-       <description>RAW_OVR</description>
+       <description>Raw FIFO Overrun Interrupt Enable</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
        <name>RAW_AHBERR</name>
-       <description>RAW_AHBERR</description>
+       <description>Raw AHB Error Interrupt Enable</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
       </field>

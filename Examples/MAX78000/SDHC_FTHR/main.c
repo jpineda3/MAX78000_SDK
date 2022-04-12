@@ -219,8 +219,14 @@ int createFile()
     
     printf("Enter the name of the text file: \n");
     scanf("%255s", filename);
-    printf("Enter the length of the file: (256 max)\n");
+    printf("Enter the length of the file: (%d max)\n", MAXLEN);
     scanf("%d", &length);
+
+    if(length > MAXLEN) {
+        printf("Error. File size limit for this example is %d bytes.\n", MAXLEN);
+        return FR_INVALID_PARAMETER;
+    }
+
     printf("Creating file %s with length %d\n", filename, length);
     
     if ((err = f_open(&file, (const TCHAR*) filename, FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
@@ -259,14 +265,19 @@ int appendFile()
         mount();
     }
     
-    printf("Type name of file to append: \n");
+    printf("Enter name of file to append: \n");
     scanf("%255s", filename);
-    printf("Type length of random data to append: \n");
+    printf("Enter length of random data to append: (%d max)\n", MAXLEN);
     scanf("%d", &length);
     
     if ((err = f_stat((const TCHAR*) filename, &fno)) == FR_NO_FILE) {
         printf("File %s doesn't exist!\n", (const TCHAR*) filename);
         return err;
+    }
+
+    if(length > MAXLEN) {
+        printf("Error. Size limit for this example is %d bytes.\n", MAXLEN);
+        return FR_INVALID_PARAMETER;
     }
     
     if ((err = f_open(&file, (const TCHAR*) filename, FA_OPEN_APPEND | FA_WRITE)) != FR_OK) {
@@ -613,7 +624,7 @@ int main(void)
         }
         
         if (err >= 0 && err <= 20) {
-            printf("Function Returned with code: %d\n", FF_ERRORS[err]);
+            printf("Function Returned with code: %s\n", FF_ERRORS[err]);
         }
         else {
             printf("Function Returned with code: %d\n", err);

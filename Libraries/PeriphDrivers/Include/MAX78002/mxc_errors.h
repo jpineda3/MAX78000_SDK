@@ -89,6 +89,10 @@
 #define     E_ABORT         -16
 /** The requested operation is not supported */
 #define     E_NOT_SUPPORTED -17
+/** Operations resulted in unexpected overrun */
+#define     E_OVERRUN       -18
+/** Operations resulted in unexpected underrun */
+#define     E_UNDERRUN      -19
 /**@} end of MXC_Error_Codes group */
 
 #endif /* _MXC_ERRORS_H_ */

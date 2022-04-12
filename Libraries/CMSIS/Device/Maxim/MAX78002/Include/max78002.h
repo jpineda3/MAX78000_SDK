@@ -683,19 +683,25 @@ typedef enum {
 #define MXC_SDHC                        ((mxc_sdhc_regs_t*)MXC_BASE_SDHC)
 
 /******************************************************************************/
-/*                                                                      CSI2  */
+/*                                                                       CSI2 */
 #define MXC_BASE_CSI2                   ((uint32_t)0x40062000UL)
 #define MXC_CSI2                        ((mxc_csi2_regs_t*)MXC_BASE_CSI2)
 
 /******************************************************************************/
-/*                                                                   CNN_FIFO */
-#define MXC_BASE_CNN_FIFO               ((uint32_t)0x400C0400UL)
-#define MXC_CNN_FIFO                    ((mxc_cnn_fifo_regs_t*)MXC_BASE_CNN_FIFO)
+/*                                                                  CSI2 FIFO */
+#define MXC_BASE_CSI2_FIFO              ((uint32_t)0x400C0800UL)
+#define MXC_CSI2_FIFO                   ((uint32_t*)MXC_BASE_CSI2_FIFO)
+#define MXC_CSI2_FIFO_DEPTH 			(128)
 
 /******************************************************************************/
 /*                                                                        CNN */
 #define MXC_BASE_CNN                    ((uint32_t)0x50000000UL)
 #define MXC_CNN                         ((mxc_cnn_regs_t*)MXC_BASE_CNN)
+
+/******************************************************************************/
+/*                                                                   CNN FIFO */
+#define MXC_BASE_CNN_FIFO               ((uint32_t)0x400C0400UL)
+#define MXC_CNN_FIFO                    ((mxc_cnn_fifo_regs_t*)MXC_BASE_CNN_FIFO)
 
 /******************************************************************************/
 /*                                                               Bit Shifting */

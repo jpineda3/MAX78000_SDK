@@ -62,5 +62,6 @@ var searchData=
   ['autocal0',['autocal0',['../group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26',1,'mxc_fcr_regs_t']]],
   ['autocal1',['autocal1',['../group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba',1,'mxc_fcr_regs_t']]],
   ['autocal2',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]],
+  ['autoflush',['autoflush',['../group__csi2.html#a7ea4324c0b7c456f581971f50e720490',1,'_mxc_csi2_req_t']]],
   ['assertion_20checks_20for_20debugging',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]]
 ];

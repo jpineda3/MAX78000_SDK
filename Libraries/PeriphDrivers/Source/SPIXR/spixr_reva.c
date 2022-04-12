@@ -75,8 +75,7 @@ int MXC_SPIXR_RevA_WriteTXFIFO(mxc_spixr_reva_regs_t *spixr, uint8_t* buf, int l
 
 void MXC_SPIXR_RevA_SetSS(mxc_spixr_reva_regs_t *spixr, int ssIdx)
 {
-    spixr->ctrl1 |=
-       (ssIdx << MXC_F_SPIXR_REVA_CTRL1_SS_POS);
+    MXC_SETFIELD(spixr->ctrl1, MXC_F_SPIXR_REVA_CTRL1_SS, ((1 << ssIdx) << MXC_F_SPIXR_REVA_CTRL1_SS_POS));
 }
 
 int MXC_SPIXR_RevA_GetSS(mxc_spixr_reva_regs_t *spixr)
@@ -86,8 +85,7 @@ int MXC_SPIXR_RevA_GetSS(mxc_spixr_reva_regs_t *spixr)
 
 void MXC_SPIXR_RevA_SetSSCtrl(mxc_spixr_reva_regs_t *spixr, int stayActive)
 {
-    spixr->ctrl1 |=
-       (stayActive << MXC_F_SPIXR_REVA_CTRL1_SS_CTRL_POS);
+    MXC_SETFIELD(spixr->ctrl1, MXC_F_SPIXR_REVA_CTRL1_SS_CTRL, ((!!stayActive) << MXC_F_SPIXR_REVA_CTRL1_SS_CTRL_POS));
 }
 
 int MXC_SPIXR_RevA_GetSSCtrl(mxc_spixr_reva_regs_t *spixr)
@@ -154,7 +152,7 @@ int MXC_SPIXR_RevA_SetWidth(mxc_spixr_reva_regs_t *spixr, mxc_spixr_reva_width_t
 
 int MXC_SPIXR_RevA_SetSPIMode(mxc_spixr_reva_regs_t *spixr, mxc_spixr_reva_mode_t mode)
 {
-    if(mode <= MXC_SPIXR_REVA_MODE_3) {
+    if(mode < MXC_SPIXR_REVA_MODE_0 || mode > MXC_SPIXR_REVA_MODE_3) {
         return E_BAD_PARAM;
     }
     
@@ -187,7 +185,7 @@ int MXC_SPIXR_RevA_SetSSPolarity(mxc_spixr_reva_regs_t *spixr, int active)
 
 void MXC_SPIXR_RevA_SetSSTiming(mxc_spixr_reva_regs_t *spixr, unsigned int ssIActDelay, unsigned int postActive, unsigned int preActive)
 {
-    MXC_ASSERT(ssIActDelay > 0xFF || postActive > 0xFF || preActive > 0xFF);
+    MXC_ASSERT(ssIActDelay < 0x100 && postActive < 0x100 && preActive < 0x100);
     MXC_SETFIELD(spixr->ss_time, MXC_F_SPIXR_REVA_SS_TIME_SSACT1, (preActive<<MXC_F_SPIXR_REVA_SS_TIME_SSACT1_POS));
     MXC_SETFIELD(spixr->ss_time, MXC_F_SPIXR_REVA_SS_TIME_SSACT2, (postActive<<MXC_F_SPIXR_REVA_SS_TIME_SSACT2_POS));
     MXC_SETFIELD(spixr->ss_time, MXC_F_SPIXR_REVA_SS_TIME_SSINACT, (ssIActDelay<<MXC_F_SPIXR_REVA_SS_TIME_SSINACT_POS));

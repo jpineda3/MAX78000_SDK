@@ -352,8 +352,12 @@ int MXC_I2C_Recover(mxc_i2c_regs_t* i2c, unsigned int retries)
 
 int MXC_I2C_MasterTransaction(mxc_i2c_req_t* req)
 {
-    MXC_I2C_ClearRXFIFO(req->i2c);
-    MXC_I2C_ClearTXFIFO(req->i2c);
+	if(!(req->i2c->status & MXC_F_I2C_STATUS_TX_EM)) {
+		MXC_I2C_ClearTXFIFO(req->i2c);
+	}
+	if(!(req->i2c->status & MXC_F_I2C_STATUS_RX_EM)) {
+		MXC_I2C_ClearRXFIFO(req->i2c);
+	}
 
     return MXC_I2C_RevA_MasterTransaction((mxc_i2c_reva_req_t*) req);
 }
