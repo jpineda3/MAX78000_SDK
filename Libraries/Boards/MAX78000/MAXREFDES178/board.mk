@@ -54,6 +54,7 @@ VPATH += $(MISC_DRIVERS_DIR)
 VPATH += $(MISC_DRIVERS_DIR)/Camera
 VPATH += $(MISC_DRIVERS_DIR)/LED
 VPATH += $(MISC_DRIVERS_DIR)/PushButton
+VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
 
 
 # Where to find BSP header files
@@ -63,3 +64,4 @@ IPATH += $(MISC_DRIVERS_DIR)
 IPATH += $(MISC_DRIVERS_DIR)/Camera
 IPATH += $(MISC_DRIVERS_DIR)/LED
 IPATH += $(MISC_DRIVERS_DIR)/PushButton
+VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
