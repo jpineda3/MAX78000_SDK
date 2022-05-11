@@ -65,7 +65,7 @@ void TFT_Intro(void);
 void TFT_Print(char* str, int x, int y, int font, int length);
 void TFT_End(uint16_t words);
 #ifdef BOARD_EVKIT_V1
-int image_bitmap = img_1_bmp;
+int image_bitmap = ADI_256_bmp;
 int font_1 = urw_gothic_12_white_bg_grey;
 int font_2 = urw_gothic_13_white_bg_grey;
 #endif
@@ -110,7 +110,7 @@ int main(void)
     Microphone_Power(POWER_ON);
 #endif
 
-    printf("Maxim Integrated \nKeyword Spotting Demo\nVer. %s \n", VERSION);
+    printf("Analog Devices \nKeyword Spotting Demo\nVer. %s \n", VERSION);
 
 #ifdef ENABLE_TFT
     MXC_Delay(500000);
@@ -206,7 +206,7 @@ void TFT_Intro(void)
 {
     char buff[TFT_BUFF_SIZE];
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 55, 10, font_2, sprintf(buff, "MAXIM INTEGRATED"));
+    TFT_Print(buff, 55, 10, font_2, sprintf(buff, "ANALOG DEVICES"));
     TFT_Print(buff, 35, 40, font_1, sprintf(buff, "Keyword Spotting Demo"));
     TFT_Print(buff, 70, 70, font_1, sprintf(buff, "Ver. %s", VERSION));
     TFT_Print(buff, 5, 110, font_1, sprintf(buff, "Following keywords can be"));

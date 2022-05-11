@@ -73,7 +73,7 @@
 #define CNN_NUM_OUTPUTS     3     // number of classes
 
 #ifdef BOARD_EVKIT_V1
-int image_bitmap_1 = img_1_bmp;
+int image_bitmap_1 = ADI_256_bmp;
 int image_bitmap_2 = logo_white_bg_darkgrey_bmp;
 int font_1 = urw_gothic_13_white_bg_grey;
 int font_2 = urw_gothic_12_white_bg_grey;
@@ -247,6 +247,8 @@ void process_camera_img(uint32_t *data0, uint32_t *data1, uint32_t *data2)
       *ptr0 = (*buffer); buffer++;
       *ptr1 = (*buffer); buffer++;
       *ptr2 = (*buffer); buffer++;
+	  
+	  buffer++; //MSB is zero
     }
   }
 }
@@ -426,21 +428,21 @@ int main(void)
 #ifdef TFT_ENABLE
   MXC_TFT_SetPalette(image_bitmap_2);
   MXC_TFT_SetBackGroundColor(4);
-  MXC_TFT_ShowImage(1, 1, image_bitmap_2);
+  //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
   memset(buff,' ',TFT_BUFF_SIZE);
-  TFT_Print(buff, 55, 50, font_1, sprintf(buff, "MAXIM INTEGRATED"));
+  TFT_Print(buff, 55, 50, font_1, sprintf(buff, "ANALOG DEVICES"));
   TFT_Print(buff, 30, 90, font_2, sprintf(buff, "Rock-Paper-Scissors Game"));
-  TFT_Print(buff, 55, 130, font_1, sprintf(buff, "PRESS PB1 TO START!"));
+  TFT_Print(buff, 30, 130, font_1, sprintf(buff, "PRESS PB1(SW1) TO START!"));
 #endif
 
   int frame = 0;
 
   while (1) {
-    printf("********** Press PB1 to capture an image **********\r\n");
+    printf("********** Press PB1(SW1) to capture an image **********\r\n");
     while(!PB_Get(0));
 #ifdef TFT_ENABLE
     MXC_TFT_ClearScreen();
-    MXC_TFT_ShowImage(1, 1, image_bitmap_2);
+    //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
     TFT_Print(buff, 55, 110, font_2, sprintf(buff, "CAPTURING IMAGE...."));
 #endif
 
@@ -463,7 +465,7 @@ int main(void)
 #ifdef TFT_ENABLE
     // Show the input data on the lcd.
     MXC_TFT_ClearScreen();
-    MXC_TFT_ShowImage(1, 1, image_bitmap_2);
+    //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
     printf("Show camera frame on LCD.\n");
     TFT_Print(buff, 10, 30, font_2, sprintf(buff, "User Move"));
     TFT_Print(buff, 152, 30, font_2, sprintf(buff, "Computer Move"));
@@ -585,7 +587,7 @@ int main(void)
     }
 
     comp_choice = 0; user_choice = 0;
-    TFT_Print(buff, 5, 210, font_2, sprintf(buff, "PRESS PB1 TO CAPTURE IMAGE"));
+    TFT_Print(buff, 5, 210, font_2, sprintf(buff, "PRESS PB1(SW1) TO CAPTURE"));
   }
 
   return 0;

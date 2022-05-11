@@ -100,7 +100,7 @@ If using Linux, perform this step:
 ### MAX78000 Feather operations
 
 The TFT display is optional and not supplied with the MAX78000 Feather board.
-User should use PC terminal program to observe **cats-dogs_demo** result as described in "Terminal output" section.
+User should use PC terminal program to observe **cats-dogs_demo** result as described in "Terminal output" section with help of the ascii art representation of the captured image.
 
 The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered here:
 
@@ -119,7 +119,7 @@ endif
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
 Press PB1 (SW1) button to start demo.
 
-<img src="Resources/fthr_tft.png" style="zoom: 50%;" />
+<img src="Resources/fthr_tft.png" style="zoom: 20%;" />
 
 The PB1 (SW1) button is located as shown in picture bellow:
 
@@ -152,9 +152,9 @@ To create your own header file follow these steps:
 Terminal output
 ---------------
 
-The Console UART of the device will output these messages:
+The Console UART of the device will output the classification result + an ascii art demonstration of the picture :
 
-![](Resources/terminal.png)
+<img src="Resources/terminal.png" style="zoom: 80%;" />
 
 ### References
 

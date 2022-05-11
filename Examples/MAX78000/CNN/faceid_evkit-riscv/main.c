@@ -175,7 +175,7 @@ static void screen_faceID(void)
 #ifdef TFT_ENABLE
     MXC_TFT_SetPalette(bitmap);
     MXC_TFT_SetBackGroundColor(4);
-    MXC_TFT_ShowImage(3, 5, bitmap);
+    //MXC_TFT_ShowImage(3, 5, bitmap);
 #ifdef BOARD_EVKIT_V1
     MXC_TFT_ShowImage(BACK_X, BACK_Y, left_arrow_bmp); // back button icon
 #endif

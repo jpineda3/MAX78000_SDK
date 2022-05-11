@@ -1,6 +1,6 @@
 ###################################################################################################
 #
-# Copyright (C) 2020-2022 Maxim Integrated Products, Inc. All Rights Reserved.
+# Copyright (C) 2020-2021 Maxim Integrated Products, Inc. All Rights Reserved.
 #
 # Maxim Integrated Products, Inc. Default Copyright Notice:
 # https://www.maximintegrated.com/en/aboutus/legal/copyrights.html
@@ -44,8 +44,7 @@ img = Image.open(file)
 imgname = file
 
 # Info
-print(" Name: {imgname} \n Size: {img.size} \n Format: {img.format}")
-# print(" Name: {} \n Size: {} \n Format: {}".format(imgname, img.size, img.format))
+print(f" Name: {imgname} \n Size: {img.size} \n Format: {img.format}")
 # print(f" Mode: {img.mode} \n Info: {img.info}\n")
 
 if img.format != 'BMP':
@@ -81,11 +80,11 @@ for arg in sys.argv:
 # Make sure dimension is even
 img = img.resize((2*(img.size[0]//2), 2*(img.size[1]//2)))
 
-print('Processing {img.size} image')
+print(f'Processing {img.size} image')
 img.save("temp.bmp", "BMP")
 
 if (img.size[0] > 320 or img.size[1] > 240):
-    print('Error: image size cannot be greater than 320x240: use -s to rescale')
+    print(f'Error: image size cannot be greater than 320x240: use -s to rescale')
     sys.exit()
 
 # Read image data

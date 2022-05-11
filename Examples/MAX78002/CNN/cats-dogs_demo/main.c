@@ -48,11 +48,15 @@
 
 // Comment out USE_SAMPLEDATA to use Camera module
 //#define USE_SAMPLEDATA
+#define ASCII_ART
 
-#define CAMERA_TO_LCD (1)
-#define IMAGE_SIZE_X  (64)
-#define IMAGE_SIZE_Y  (64)
-#define CAMERA_FREQ   (10 * 1000 * 1000)
+#define IMAGE_SIZE_X  (64*2)
+#define IMAGE_SIZE_Y  (64*2)
+
+#define TFT_X_START		100
+#define TFT_Y_START		50
+
+#define CAMERA_FREQ   (5 * 1000 * 1000)
 
 #ifdef TFT_ENABLE
 #define TFT_BUFF_SIZE   30    // TFT buffer size
@@ -62,226 +66,238 @@ int font_2 = (int)& SansSerif16x16[0];
 #endif
 const char classes[CNN_NUM_OUTPUTS][10] = {"Cat", "Dog"};
 
-volatile uint32_t cnn_time; // Stopwatch
-uint32_t input_0_camera[1024];
-uint32_t input_1_camera[1024];
-uint32_t input_2_camera[1024];
-
-void fail(void)
-{
-    printf("\n*** FAIL ***\n\n");
-    while (1);
-}
-
-#ifdef USE_SAMPLEDATA
-// Data input: CHW 3x64x64 (12288 bytes total / 4096 bytes per channel):
-static const uint32_t input_0[] = SAMPLE_INPUT_0;
-static const uint32_t input_1[] = SAMPLE_INPUT_16;
-static const uint32_t input_2[] = SAMPLE_INPUT_32;
-#endif
-
-/* **************************************************************************** */
-
-void cnn_load_input(void)
-{
-#ifdef USE_SAMPLEDATA
-    const uint32_t* in0 = input_0;
-    const uint32_t* in1 = input_1;
-    const uint32_t* in2 = input_2;
-#else
-    const uint32_t* in0 = input_0_camera;
-    const uint32_t* in1 = input_1_camera;
-    const uint32_t* in2 = input_2_camera;
-#endif
-
-   	memcpy32((uint32_t *) 0x51800000, in0, 1024);
-   	memcpy32((uint32_t *) 0x52800000, in1, 1024);
-   	memcpy32((uint32_t *) 0x53800000, in2, 1024);
-}
-
 // Classification layer:
 static int32_t ml_data[CNN_NUM_OUTPUTS];
 static q15_t ml_softmax[CNN_NUM_OUTPUTS];
 
-void softmax_layer(void)
-{
-    cnn_unload((uint32_t*) ml_data);
-    softmax_q17p14_q15((const q31_t*) ml_data, CNN_NUM_OUTPUTS, ml_softmax);
-}
+volatile uint32_t cnn_time; // Stopwatch
+
+// RGB565 buffer for TFT
+uint8_t data565[IMAGE_SIZE_X * 2];
+
+#ifdef USE_SAMPLEDATA
+// Data input: HWC 3x128x128 (49152 bytes total / 16384 bytes per channel):
+static const uint32_t input_0[] = SAMPLE_INPUT_0; // input data from header file
+#else
+static uint32_t input_0[IMAGE_SIZE_X * IMAGE_SIZE_Y]; // buffer for camera image
+#endif
 
 /* **************************************************************************** */
-static uint8_t signed_to_unsigned(int8_t val)
-{
-    uint8_t value;
+#ifdef ASCII_ART
 
-    if (val < 0) {
-        value = ~val + 1;
-        return (128 - value);
-    }
+//char * brightness = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. "; // standard
+char *brightness = "@%#*+=-:. "; // simple
+#define RATIO 2  // ratio of scaling down the image to display in ascii
+void asciiart(uint8_t *img) {
+	int skip_x, skip_y;
+	uint8_t r, g, b, Y;
+	uint8_t *srcPtr = img;
+	int l = strlen(brightness) - 1;
 
-    return val + 128;
+	skip_x = RATIO;
+	skip_y = RATIO;
+	for (int i = 0; i < IMAGE_SIZE_Y; i++) {
+		for (int j = 0; j < IMAGE_SIZE_X; j++) {
+
+			// 0x00bbggrr, convert to [0,255] range
+			r = *srcPtr++ ^ 0x80;
+			g = *(srcPtr++) ^ 0x80;
+			b = *(srcPtr++) ^ 0x80;
+
+			srcPtr++; //skip msb=0x00
+
+			// Y = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+			Y = (3 * r + b + 4 * g) >> 3; // simple luminance conversion
+			if ((skip_x == RATIO) && (skip_y == RATIO))
+				printf("%c", brightness[l - (Y * l / 255)]);
+
+			skip_x++;
+			if (skip_x > RATIO)
+				skip_x = 1;
+		}
+		skip_y++;
+		if (skip_y > RATIO) {
+			printf("\n");
+			skip_y = 1;
+		}
+	}
+
 }
+
+#endif
 
 /* **************************************************************************** */
-int8_t unsigned_to_signed(uint8_t val)
-{
-    return val - 128;
-}
+
+void TFT_Print(char *str, int x, int y, int font, int length) {
 #ifdef TFT_ENABLE
-/* **************************************************************************** */
-void TFT_Print(char* str, int x, int y, int font, int length)
-{
     // fonts id
     text_t text;
     text.data = str;
     text.len = length;
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
+#endif
 }
 
-#define X_OFFSET    47
-#define Y_OFFSET    15
-#define SCALE       2.2
+/* **************************************************************************** */
+void fail(void) {
+	printf("\n*** FAIL ***\n\n");
+
+	while (1)
+		;
+}
 
 /* **************************************************************************** */
-void lcd_show_sampledata(uint32_t* data0, uint32_t* data1, uint32_t* data2, int length)
+
+void cnn_load_input(void) {
+  memcpy32((uint32_t *) 0x51800000, input_0, 16384);
+}
+
+/* **************************************************************************** */
+#if defined USE_SAMPLEDATA && defined TFT_ENABLE
+void display_sampledata(void)
 {
-    int i;
-    int j;
-    int x;
-    int y;
-    int r;
-    int g;
-    int b;
-    int scale = SCALE;
 
-    uint32_t color;
-    uint8_t* ptr0;
-    uint8_t* ptr1;
-    uint8_t* ptr2;
+#ifdef TFT_ENABLE
+    uint32_t  w;
+    uint8_t r,g,b;
+    uint16_t rgb;
 
-    x = X_OFFSET;
-    y = Y_OFFSET;
+    int j = 0;
+    uint32_t temp;
 
-    for (i = 0; i < length; i++) {
-        ptr0 = (uint8_t*)&data0[i];
-        ptr1 = (uint8_t*)&data1[i];
-        ptr2 = (uint8_t*)&data2[i];
+    int cnt = 0;;
+    w = IMAGE_SIZE_X;
 
-        for (j = 0; j < 4; j++) {
-            r = ptr0[j];
-            g = ptr1[j];
-            b = ptr2[j];
+    // Get image line by line
+    for (int row = 0; row < IMAGE_SIZE_Y; row++)
+    {
 
-            color = RGB(r, g, b); // convert to RGB565
+		//LED_Toggle(LED2);
+#if 0
+			j = IMAGE_SIZE_X*2 - 2; // mirror on display
+#else
+			j = 0;
+#endif
 
-            MXC_TFT_WritePixel(x * scale, y * scale, scale, scale, color);
-            x += 1;
+			for (int k= 0; k< 4*w; k+=4){
 
-            if (x >= (IMAGE_SIZE_X + X_OFFSET)) {
-                x = X_OFFSET;
-                y += 1;
+				// sample data is already in [-128,127] range, make it [0,255] for display
+				temp = input_0[cnt] ^ 0x00808080;
 
-                if ((y + 6) >= (IMAGE_SIZE_Y + Y_OFFSET)) {
-                    return;
-                }
-            }
-        }
+				// data format: 0x00bbggrr
+				r = temp & 0xFF;
+				g = (temp >> 8) & 0xFF;
+				b = (temp >> 16) & 0xFF;
+				cnt++;
+
+				// convert to RGB656 for display
+				rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+				data565[j] = (rgb >> 8) & 0xFF;
+				data565[j+1] = rgb & 0xFF;
+
+#if 0
+				j-=2; // mirror on display
+#else
+				j+=2;
+#endif
+			}
+
+			MXC_TFT_ShowImageCameraRGB565(TFT_X_START, TFT_Y_START + row, data565, w, 1);
+
+			LED_Toggle(LED2);
     }
+#endif
+}
+
+#elif !defined USE_SAMPLEDATA
+void capture_process_camera(void) {
+
+	uint8_t *raw;
+	uint32_t imgLen;
+	uint32_t w, h;
+
+	int cnt = 0;
+
+	uint8_t r, g, b;
+	uint16_t rgb;
+	int j = 0;
+
+	uint8_t *data = NULL;
+	stream_stat_t *stat;
+
+	camera_start_capture_image();
+
+	// Get the details of the image from the camera driver.
+	camera_get_image(&raw, &imgLen, &w, &h);
+
+	// Get image line by line
+	for (int row = 0; row < h; row++) {
+		// Wait until camera streaming buffer is full
+		while ((data = get_camera_stream_buffer()) == NULL) {
+			if (camera_is_image_rcv()) {
+				break;
+			}
+		}
+
+		//LED_Toggle(LED2);
+#if 0
+			j = IMAGE_SIZE_X*2 - 2; // mirror on display
+#else
+		j = 0;
+#endif
+		for (int k = 0; k < 4 * w; k += 4) {
+
+			// data format: 0x00bbggrr
+			r = data[k];
+			g = data[k + 1];
+			b = data[k + 2];
+			//skip k+3
+
+			// change the range from [0,255] to [-128,127] and store in buffer for CNN
+			input_0[cnt++] = ((b << 16) | (g << 8) | r) ^ 0x00808080;
+
+			// convert to RGB656 for display
+			rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+			data565[j] = (rgb >> 8) & 0xFF;
+			data565[j + 1] = rgb & 0xFF;
+#if 0
+				j-=2; // mirror on display
+#else
+			j += 2;
+#endif
+		}
+#ifdef TFT_ENABLE
+			MXC_TFT_ShowImageCameraRGB565(TFT_X_START, TFT_Y_START + row, data565, w, 1);
+#endif
+
+		//LED_Toggle(LED2);
+		// Release stream buffer
+		release_camera_stream_buffer();
+	}
+
+	//camera_sleep(1);
+	stat = get_camera_stream_statistic();
+
+	if (stat->overflow_count > 0) {
+		printf("OVERFLOW DISP = %d\n", stat->overflow_count);
+		LED_On(LED2); // Turn on red LED if overflow detected
+		while (1)
+			;
+	}
+
 }
 #endif
-/* **************************************************************************** */
-void process_camera_img(uint32_t* data0, uint32_t* data1, uint32_t* data2)
-{
-    uint8_t* frame_buffer;
-    uint32_t imgLen;
-    uint32_t w, h, x, y;
-    uint8_t* ptr0;
-    uint8_t* ptr1;
-    uint8_t* ptr2;
-    uint8_t* buffer;
-
-    camera_get_image(&frame_buffer, &imgLen, &w, &h);
-    ptr0 = (uint8_t*)data0;
-    ptr1 = (uint8_t*)data1;
-    ptr2 = (uint8_t*)data2;
-    buffer = frame_buffer;
-
-    for (y = 0; y < h; y++) {
-        for (x = 0; x < w; x++, ptr0++, ptr1++, ptr2++) {
-            *ptr0 = (*buffer);
-            buffer++;
-            *ptr1 = (*buffer);
-            buffer++;
-            *ptr2 = (*buffer);
-            buffer++;
-        }
-    }
-}
-
-/* **************************************************************************** */
-void capture_camera_img(void)
-{
-    camera_start_capture_image();
-
-    while (1) {
-        if (camera_is_image_rcv()) {
-            return;
-        }
-    }
-}
-
-/* **************************************************************************** */
-void convert_img_unsigned_to_signed(uint32_t* data0, uint32_t* data1, uint32_t* data2)
-{
-    uint8_t* ptr0;
-    uint8_t* ptr1;
-    uint8_t* ptr2;
-    ptr0 = (uint8_t*)data0;
-    ptr1 = (uint8_t*)data1;
-    ptr2 = (uint8_t*)data2;
-
-    for (int i = 0; i < 4096; i++) {
-        *ptr0 = unsigned_to_signed(*ptr0);
-        ptr0++;
-        *ptr1 = unsigned_to_signed(*ptr1);
-        ptr1++;
-        *ptr2 = unsigned_to_signed(*ptr2);
-        ptr2++;
-    }
-}
-
-/* **************************************************************************** */
-void convert_img_signed_to_unsigned(uint32_t* data0, uint32_t* data1, uint32_t* data2)
-{
-    uint8_t* ptr0;
-    uint8_t* ptr1;
-    uint8_t* ptr2;
-    ptr0 = (uint8_t*)data0;
-    ptr1 = (uint8_t*)data1;
-    ptr2 = (uint8_t*)data2;
-
-    for (int i = 0; i < 4096; i++) {
-        *ptr0 = signed_to_unsigned(*ptr0);
-        ptr0++;
-        *ptr1 = signed_to_unsigned(*ptr1);
-        ptr1++;
-        *ptr2 = signed_to_unsigned(*ptr2);
-        ptr2++;
-    }
-}
 
 /* **************************************************************************** */
 int main(void)
 {
-    int i;
-    int digs, tens;
-    int result[CNN_NUM_OUTPUTS];
-#ifndef USE_SAMPLEDATA
-    int ret = 0, dma_channel;
-#endif
-#ifdef TFT_ENABLE
-    char buff[TFT_BUFF_SIZE];
-#endif
+	int i;
+	int digs, tens;
+	int ret = 0;
+	int result[CNN_NUM_OUTPUTS]; // = {0};
+	int dma_channel;
+
+	char buff[TFT_BUFF_SIZE];
 
     printf("\n\nCats-vs-Dogs Evkit Demo\n");
 
@@ -323,7 +339,6 @@ int main(void)
     MXC_Delay(1000000);
 #endif
 
-#ifndef USE_SAMPLEDATA
     // Initialize DMA for camera interface
     MXC_DMA_Init();
     dma_channel = MXC_DMA_AcquireChannel();
@@ -331,14 +346,15 @@ int main(void)
     // Initialize camera.
     printf("Init Camera.\n");
     camera_init(CAMERA_FREQ);
-
-    ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA, dma_channel);
+	ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA, dma_channel);
 
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
         return -1;
     }
-#endif
+	
+	camera_write_reg(0x11, 0x3); // set camera clock prescaller to prevent streaming overflow
+
 
 #ifdef TFT_ENABLE
 
@@ -350,109 +366,106 @@ int main(void)
     TFT_Print(buff, 55, 130, font_2, sprintf(buff, "PRESS PB1 TO START!"));
 #endif
 
-    int frame = 0;
+    printf("********** Press PB1(SW4) to capture an image **********\r\n");
+
+    while (!PB_Get(0));
+	
+	
+#ifdef TFT_ENABLE
+    MXC_TFT_ClearScreen();
+#endif
+
 
     while (1) {
-        printf("********** Press PB1 to capture an image **********\r\n");
 
-        while (!PB_Get(0));
-
-#ifdef TFT_ENABLE
-        MXC_TFT_ClearScreen();
-
-        TFT_Print(buff, 55, 110, font_2, sprintf(buff, "CAPTURING IMAGE...."));
-#endif
+		LED_Off(LED1);
+		LED_Off(LED2);
 
 #ifdef USE_SAMPLEDATA
-        // Copy the sampledata reference to the camera buffer as a test.
-        printf("\nCapturing sampledata %d times\n", ++frame);
-        memcpy32(input_0_camera, input_0, 1024);
-        memcpy32(input_1_camera, input_1, 1024);
-        memcpy32(input_2_camera, input_2, 1024);
-        convert_img_signed_to_unsigned(input_0_camera, input_1_camera, input_2_camera);
-#else
-        // Capture a single camera frame.
-        printf("\nCapture a camera frame %d\n", ++frame);
-        capture_camera_img();
-        // Copy the image data to the CNN input arrays.
-        printf("Copy camera frame to CNN input buffers.\n");
-        process_camera_img(input_0_camera, input_1_camera, input_2_camera);
-#endif
-
 #ifdef TFT_ENABLE
-        // Show the input data on the lcd.
-        MXC_TFT_ClearScreen();
-   //     MXC_TFT_ShowImage(1, 1, image_bitmap_2);
-        printf("Show camera frame on LCD.\n");
-        lcd_show_sampledata(input_0_camera, input_1_camera, input_2_camera, 1024);
+        display_sampledata();
+#endif
+#else
+		capture_process_camera();
 #endif
 
-        convert_img_unsigned_to_signed(input_0_camera, input_1_camera, input_2_camera);
+		cnn_init(); // Bring state machine into consistent state
+		cnn_load_bias();
+		cnn_configure(); // Configure state machine
 
-        // Enable CNN clock
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN);
+		cnn_load_input();
+		cnn_start();   
 
-        cnn_init(); // Bring state machine into consistent state
-//        cnn_load_weights(); // No need to reload kernels
-        cnn_load_bias(); // No need to reload bias
-        cnn_configure(); // Configure state machine
-        cnn_load_input();
-        cnn_start();
-
-
+        SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
         while (cnn_time == 0) {
             __WFI();    // Wait for CNN interrupt
         }
 
-        // Unload CNN data
-        softmax_layer();
-
-        cnn_stop();
-        // Disable CNN clock to save power
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CNN);
+		// Unload CNN data
+		cnn_unload((uint32_t*) ml_data);
+		cnn_stop();
+		
+		// Softmax
+		softmax_q17p14_q15((const q31_t*) ml_data, CNN_NUM_OUTPUTS, ml_softmax);
 
         printf("Time for CNN: %d us\n\n", cnn_time);
 
         printf("Classification results:\n");
 
-        for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
-            digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
-            tens = digs % 10;
-            digs = digs / 10;
-            result[i] = digs;
-            printf("[%7d] -> Class %d %8s: %d.%d%%\r\n", ml_data[i], i, classes[i], result[i], tens);
-        }
+		for (i = 0; i < CNN_NUM_OUTPUTS; i++) {
+			digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
+			tens = digs % 10;
+			digs = digs / 10;
+			result[i] = digs;
+			printf("[%7d] -> Class %d %8s: %d.%d%%\r\n", ml_data[i], i,
+					classes[i], result[i], tens);
+		}
 
         printf("\n");
 
 #ifdef TFT_ENABLE
+
+        area_t  area;
+        area.x = 0;
+        area.y = 0;
+        area.w = 320;
+        area.h = TFT_Y_START-1;
+        MXC_TFT_ClearArea(&area, 4);
+
         memset(buff, 32, TFT_BUFF_SIZE);
-        TFT_Print(buff, 10, 150, font_1, sprintf(buff, "Image Detected : "));
-        memset(buff, 0, TFT_BUFF_SIZE);
-        TFT_Print(buff, 10, 180, font_1, sprintf(buff, "Probability : "));
-        memset(buff, 32, TFT_BUFF_SIZE);
-
-        if (result[0] > result[1]) {
-            TFT_Print(buff, 195, 150, font_1, sprintf(buff, "CAT"));
-            TFT_Print(buff, 135, 180, font_1, sprintf(buff, "%d%%", result[0]));
-        }
-        else if (result[1] > result[0]) {
-            TFT_Print(buff, 195, 150, font_1, sprintf(buff, "DOG"));
-            TFT_Print(buff, 135, 180, font_1, sprintf(buff, "%d%%", result[1]));
-        }
-        else {
-            TFT_Print(buff, 195, 150, font_1, sprintf(buff, "Unknown"));
-            memset(buff, 32, TFT_BUFF_SIZE);
-            TFT_Print(buff, 135, 180, font_1, sprintf(buff, "NA"));
-        }
-
-        TFT_Print(buff, 10, 210, font_1, sprintf(buff, "PRESS PB1 TO CAPTURE IMAGE"));
 #endif
-#ifdef USE_SAMPLEDATA
-	MXC_Delay(SEC(1));
+		if (result[0] == result[1]) {
+			TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1,
+					sprintf(buff, "Unknown"));
+			LED_On(LED1);
+			LED_On(LED2);
+
+		} else if (ml_data[0] > ml_data[1]) {
+			TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1,
+					sprintf(buff, "%s (%d%%)", classes[0], result[0]));
+			LED_On(LED1);
+			LED_Off(LED2);
+		} else {
+			TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1,
+					sprintf(buff, "%s (%d%%)", classes[1], result[1]));
+			LED_Off(LED1);
+			LED_On(LED2);
+		}
+
+		memset(buff, 32, TFT_BUFF_SIZE);
+		TFT_Print(buff, TFT_X_START + 30, TFT_Y_START + IMAGE_SIZE_Y + 10,
+				font_1, sprintf(buff, "%dms", cnn_time / 1000));
+		TFT_Print(buff, 20, TFT_Y_START + IMAGE_SIZE_Y + 35, font_2,
+				sprintf(buff, "PRESS PB1(SW4) TO CAPTURE"));
+
+#ifdef ASCII_ART
+		asciiart((uint8_t*) input_0);
+		printf("********** Press PB1(SW4) to capture an image **********\r\n");
+		while (!PB_Get(0))
+			;
 #endif
 
-    }
+	}
 
     return 0;
 }

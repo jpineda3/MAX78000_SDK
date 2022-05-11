@@ -1,38 +1,25 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
-        "MAXIM_PATH":"${config:MAXIM_PATH}"
+        "Path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin;${config:MAXIM_PATH}/Tools/OpenOCD;${config:MAXIM_PATH}/Tools/GNUTools/bin;${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin;${env:Path}"   
     },
+
     "terminal.integrated.env.linux": {
-        "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
-        "MAXIM_PATH":"${config:MAXIM_PATH}"
+        "PATH":"${config:MAXIM_PATH}/Tools/OpenOCD:/${config:MAXIM_PATH}/Tools/GNUTools/bin:${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/bin:${env:PATH}"
     },
-    "terminal.integrated.env.osx": {
-        "PATH":"${config:OCD_path}/bin:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
-        "MAXIM_PATH":"${config:MAXIM_PATH}"
-    },
-    
+
+    "MAXIM_PATH":"C:/MaximSDK",
+
     "target":"MAX78002",
+
     "board":"EvKit_V1",
 
-    "project_name":"${workspaceFolderBasename}",
+    "proj_name":"${workspaceFolderBasename}",
 
-    "program_file":"${config:project_name}.elf",
-    "symbol_file":"${config:program_file}",
+    "prog_file":"${config:proj_name}.elf",
 
-    "M4_OCD_interface_file":"cmsis-dap.cfg",
-    "M4_OCD_target_file":"${config:target}.cfg",
-    "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
-    "RV_OCD_target_file":"${config:target}_riscv.cfg",
+    "OCD_interface_file":"cmsis-dap.cfg",
 
-    "v_Arm_GCC":"10.3",
-    "v_xPack_GCC":"10.2.0-1.2",
+    "OCD_target_file":"max78002.cfg",
 
-    "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
-    "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}",
-    "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/${config:v_xPack_GCC}",
-    "Make_path":"${config:MAXIM_PATH}/Tools/MinGW/msys/1.0/bin",
-
-    "C_Cpp.default.intelliSenseMode": "gcc-arm"
+    "v_libgcc": "9.2.1"
 }
-

@@ -5,7 +5,7 @@ import sys
 import cv2
 
 np.set_printoptions(threshold=sys.maxsize)
-im = (Image.open('corgi.jpeg'))
+im = (Image.open('dog.jpeg'))
 size = (64,64)
 
 img = ImageOps.fit(im, size, Image.ANTIALIAS)

@@ -194,7 +194,7 @@ void TFT_Intro(void);
 void TFT_Print(char* str, int x, int y, int font, int length);
 void TFT_End(uint16_t words);
 #ifdef BOARD_EVKIT_V1
-int image_bitmap = img_1_bmp;
+int image_bitmap = ADI_256_bmp;
 int font_1 = urw_gothic_12_white_bg_grey;
 int font_2 = urw_gothic_13_white_bg_grey;
 #endif
@@ -284,7 +284,7 @@ int main(void)
     /* Configure P2.5, turn on the CNN Boost */
     cnn_boost_enable(MXC_GPIO2, MXC_GPIO_PIN_5);
 
-    PR_INFO("Maxim Integrated \nKeyword Spotting Demo\nVer. %s \n", VERSION);
+    PR_INFO("ANALOG DEVICES \nKeyword Spotting Demo\nVer. %s \n", VERSION);
     PR_INFO("\n***** Init *****\n");
     memset(pAI85Buffer, 0x0, sizeof(pAI85Buffer));
     memset(pPreambleCircBuffer, 0x0, sizeof(pPreambleCircBuffer));
@@ -360,7 +360,7 @@ int main(void)
     MXC_TFT_SetForeGroundColor(WHITE);   // set chars to white
 #endif
 
-    PR_INFO("Waiting for PB1 press\n");
+    PR_INFO("Waiting for PB1(SW1) press\n");
     TFT_Intro();
 #else
 
@@ -1130,14 +1130,14 @@ void TFT_Intro(void)
 {
     char buff[TFT_BUFF_SIZE];
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 55, 10, font_2, sprintf(buff, "MAXIM INTEGRATED"));
+    TFT_Print(buff, 55, 10, font_2, sprintf(buff, "ANALOG DEVICES"));
     TFT_Print(buff, 35, 40, font_1, sprintf(buff, "Keyword Spotting Demo"));
-    TFT_Print(buff, 70, 70, font_1, sprintf(buff, "Ver. %s", VERSION));
+    TFT_Print(buff, 65, 70, font_1, sprintf(buff, "Ver. %s", VERSION));
     TFT_Print(buff, 5, 110, font_1, sprintf(buff, "Following keywords can be"));
     TFT_Print(buff, 5, 135, font_1, sprintf(buff, "detected:"));
     TFT_Print(buff, 35, 160, font_1, sprintf(buff, "0...9, up, down, left, right"));
     TFT_Print(buff, 35, 185, font_1, sprintf(buff, "stop, go, yes, no, on, off"));
-    TFT_Print(buff, 5, 210, font_2, sprintf(buff, "PRESS PB1 TO START!"));
+    TFT_Print(buff, 30, 210, font_2, sprintf(buff, "PRESS PB1(SW1) TO START!"));
 
     while (!PB_Get(0));
 

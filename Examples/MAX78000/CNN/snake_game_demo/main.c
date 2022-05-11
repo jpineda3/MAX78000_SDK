@@ -172,7 +172,7 @@ const char keywords[NUM_OUTPUTS][10] = { "UP", "DOWN", "LEFT", "RIGHT", "STOP",
                                        };
 
 #ifdef BOARD_EVKIT_V1
-int image_bitmap_1 = img_1_bmp;
+int image_bitmap_1 = ADI_256_bmp;
 int image_bitmap_2 = logo_white_bg_darkgrey_bmp;
 int font_1 = urw_gothic_12_white_bg_grey;
 int font_2 = urw_gothic_13_white_bg_grey;
@@ -333,14 +333,14 @@ int main(void)
     // Select the color of the background
     MXC_TFT_SetPalette(image_bitmap_2);
     MXC_TFT_SetBackGroundColor(4);
-    MXC_TFT_ShowImage(0, 0, image_bitmap_2);
+    //MXC_TFT_ShowImage(0, 0, image_bitmap_2);
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 60, 40, font_2, sprintf(buff, "MAXIM INTEGRATED"));
+    TFT_Print(buff, 60, 40, font_2, sprintf(buff, "ANALOG DEVICES"));
     TFT_Print(buff, 90, 70, font_2, sprintf(buff, "SNAKE GAME"));
     TFT_Print(buff, 5, 110, font_1, sprintf(buff, "This game uses real-time"));
     TFT_Print(buff, 5, 135, font_1, sprintf(buff, "speech recognition to move"));
     TFT_Print(buff, 5, 160, font_1, sprintf(buff, "snake using certain commands"));
-    TFT_Print(buff, 10, 210, font_2, sprintf(buff, "PRESS PB1 FOR INSTRUCTIONS"));
+    TFT_Print(buff, 1, 210, font_2, sprintf(buff, "PRESS PB1(SW1) TO CONTINUE"));
 
     while (!PB_Get(0));
 
@@ -383,7 +383,7 @@ int main(void)
             MXC_TFT_ClearScreen();
             MXC_TFT_SetPalette(image_bitmap_2);
             MXC_TFT_SetBackGroundColor(4);
-            MXC_TFT_ShowImage(0, 0, image_bitmap_2);
+            //MXC_TFT_ShowImage(0, 0, image_bitmap_2);
             memset(buff, 0, TFT_BUFF_SIZE);
             TFT_Print(buff, 100, 80, font_2, sprintf(buff, "GAME OVER"));
             TFT_Print(buff, 95, 110, font_2, sprintf(buff, "Your Score: %d  ", score));
@@ -945,7 +945,7 @@ int16_t HPF(int16_t input)
 void snakeIntro(void)
 {
     MXC_TFT_ClearScreen();
-    MXC_TFT_ShowImage(0, 0, image_bitmap_2);
+    //MXC_TFT_ShowImage(0, 0, image_bitmap_2);
     memset(buff, 32, TFT_BUFF_SIZE);
     TFT_Print(buff, 5, 40, font_1, sprintf(buff, "Following keywords are used in"));
     TFT_Print(buff, 5, 65, font_1, sprintf(buff, "this game:"));
@@ -968,7 +968,7 @@ void setup()
     // Top grey
     color = setColor(48, 48, 48);
     MXC_TFT_WritePixel(0, 0, 320, 24, color);
-    MXC_TFT_ShowImage(0, 0, image_bitmap_2);
+    //MXC_TFT_ShowImage(0, 0, image_bitmap_2);
     MXC_Delay(100);
 
     memset(buff, 0, TFT_BUFF_SIZE);

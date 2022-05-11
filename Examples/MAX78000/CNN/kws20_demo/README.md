@@ -158,7 +158,7 @@ endif
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
 Press PB1 (SW1) button to start demo.
 
-![](Resources/feather_tft.jpg)
+<img src="Resources/feather_tft.jpg" style="zoom:25%;" />
 
 The PB1 (SW1) button is located as shown in picture bellow:
 

@@ -81,7 +81,7 @@
 #define OP 0.95      // opacity for overlaid mask (if alpha method is not used)
 
 #ifdef BOARD_EVKIT_V1
-int image_bitmap_1 = img_1_bmp;
+int image_bitmap_1 = ADI_256_bmp;
 int image_bitmap_2 = logo_white_bg_darkgrey_bmp;
 int font_1 = urw_gothic_12_white_bg_grey;
 int font_2 = urw_gothic_13_white_bg_grey;
@@ -251,6 +251,7 @@ void load_input(void)
 	r= unsigned_to_signed(*buffer); buffer++;
 	g= unsigned_to_signed(*buffer); buffer++;
 	b= unsigned_to_signed(*buffer); buffer++;
+	buffer++; // skip msb=0x00
 
 	input[i] = r | (g << 8) | (b<<16);
 
@@ -519,10 +520,10 @@ int main(void)
 
   MXC_TFT_SetPalette(image_bitmap_2);
   MXC_TFT_SetBackGroundColor(4);
-  MXC_TFT_ShowImage(1, 1, image_bitmap_2);
+  //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
   memset(buff,32,TFT_BUFF_SIZE);
 
-  TFT_Print(buff, 55, 30, font_2, sprintf(buff, "MAXIM INTEGRATED             "));
+  TFT_Print(buff, 55, 30, font_2, sprintf(buff, "ANALOG DEVICES             "));
 
 
   TFT_Print(buff, 15, 50, font_2, sprintf(buff, "U-Net Segmentation Demo      "));
@@ -537,7 +538,7 @@ int main(void)
   TFT_Print(buff, 5, 170, font_1, sprintf(buff, "Foliage(green), Unknown(black)  "));
 
 
-  TFT_Print(buff, 55, 210, font_2, sprintf(buff, "PRESS PB1 TO START    "));
+  TFT_Print(buff, 30, 210, font_2, sprintf(buff, "PRESS PB1(SW1) TO START    "));
   while(!PB_Get(0));
 
 
@@ -598,7 +599,7 @@ int main(void)
 
 #if !defined(USE_SPIDATA)
 
-	TFT_Print(buff, 40, 212, font_1, sprintf(buff, "PRESS PB1 TO CONTINUE      "));
+	TFT_Print(buff, 20, 212, font_1, sprintf(buff, "PRESS PB1(SW1) TO CONTINUE "));
 	while(!PB_Get(0));
 #else
     SPI_FLAG = false;
