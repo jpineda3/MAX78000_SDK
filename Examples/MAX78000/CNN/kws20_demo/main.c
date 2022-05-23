@@ -112,7 +112,7 @@
 #define THRESHOLD_LOW               100     // voice detection threshold to find end of a keyword
 #define SILENCE_COUNTER_THRESHOLD   20      // [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of a word
 #define PREAMBLE_SIZE               30*CHUNK// how many samples before beginning of a keyword to include
-#define INFERENCE_THRESHOLD         49      // min probability (0-100) to accept an inference
+#define INFERENCE_THRESHOLD         60      // min probability (0-100) to accept an inference
 #else
 #define SAMPLE_SCALE_FACTOR         1       // multiplies 16-bit samples by this scale factor before converting to 8-bit
 #define THRESHOLD_HIGH              130     // voice detection threshold to find beginning of a keyword
@@ -222,6 +222,11 @@ void WUT_IRQHandler()
 
 int main(void)
 {
+
+    int16_t wait_signal = 0;
+    int16_t signal_on = 0;
+    int16_t zero_blink = 5;
+
     uint32_t sampleCounter = 0;
     mxc_tmr_unit_t units;
 
@@ -448,9 +453,9 @@ int main(void)
             if (avg >= thresholdHigh) {
                 /* switch to keyword data collection*/
                 procState = KEYWORD;
-                PR_DEBUG("%.6d Word starts from index: %d, avg:%d > %d \n",
-                         sampleCounter, sampleCounter - PREAMBLE_SIZE - CHUNK,
-                         avg, thresholdHigh);
+                // PR_DEBUG("%.6d Word starts from index: %d, avg:%d > %d \n",
+                //          sampleCounter, sampleCounter - PREAMBLE_SIZE - CHUNK,
+                //          avg, thresholdHigh);
 
                 /* reorder circular buffer according to time at the beginning of pAI85Buffer */
                 if (preambleCounter == 0) {
@@ -514,8 +519,8 @@ int main(void)
 #endif
             {
                 memset(pChunkBuff, 0, CHUNK);
-                PR_DEBUG("%.6d: Word ends, Appends %d zeros \n", sampleCounter,
-                         SAMPLE_SIZE - ai85Counter);
+                // PR_DEBUG("%.6d: Word ends, Appends %d zeros \n", sampleCounter,
+                //          SAMPLE_SIZE - ai85Counter);
                 ret = 0;
 
                 while (!ret) {
@@ -547,7 +552,7 @@ int main(void)
                 }
 
                 //----------------------------------  : invoke AI85 CNN
-                PR_DEBUG("%.6d: Starts CNN: %d\n", sampleCounter, wordCounter);
+                // PR_DEBUG("%.6d: Starts CNN: %d\n", sampleCounter, wordCounter);
                 /* enable CNN clock */
                 MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN);
 
@@ -596,7 +601,7 @@ int main(void)
                 MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CNN);
                 /* Get time */
                 MXC_TMR_GetTime(MXC_TMR0, cnn_time, (void*) &cnn_time, &units);
-                PR_DEBUG("%.6d: Completes CNN: %d\n", sampleCounter, wordCounter);
+                // PR_DEBUG("%.6d: Completes CNN: %d\n", sampleCounter, wordCounter);
 
                 switch (units) {
                 case TMR_UNIT_NANOSEC:
@@ -615,7 +620,7 @@ int main(void)
                     break;
                 }
 
-                PR_DEBUG("CNN Time: %d us\n", cnn_time);
+                // PR_DEBUG("CNN Time: %d us\n", cnn_time);
 
                 /* run softmax */
                 softmax_q17p14_q15((const q31_t*) ml_data, NUM_OUTPUTS,
@@ -637,16 +642,70 @@ int main(void)
                 /* find detected class with max probability */
                 ret = check_inference(ml_softmax, ml_data, &out_class, &probability);
 
-                PR_DEBUG("----------------------------------------- \n");
+                // PR_DEBUG("----------------------------------------- \n");
 
                 if (!ret) {
-                    PR_DEBUG("LOW CONFIDENCE!: ");
+                    // PR_DEBUG("LOW CONFIDENCE!: ");
+                    PR_DEBUG("\n.");
                 }
 
-                PR_DEBUG("Detected word: %s (%0.1f%%)", keywords[out_class],
-                         probability);
+                // if (ret) {
+                // PR_DEBUG("Detected word: %s (%0.1f%%)", keywords[out_class],
+                //          probability);
+                // }
 
-                PR_DEBUG("\n----------------------------------------- \n");
+                if (ret & (out_class==19) & (signal_on==0)){
+                    PR_DEBUG("\nWhat signal to light?");
+                    // light LED1
+                    LED_Off(LED2);
+                    zero_blink = 32767;
+                    while (zero_blink) {
+                        zero_blink--;
+                    }
+                    LED_On(LED2);
+                    zero_blink = 32767;
+                    while (zero_blink) {
+                        zero_blink--;
+                    }
+                    LED_Off(LED2);
+                    zero_blink = 32767;
+                    while (zero_blink) {
+                        zero_blink--;
+                    }
+                    LED_On(LED2);
+                    wait_signal = 1;
+                    ret = 0;
+                }
+
+                if (ret & (out_class==5) & (signal_on==1)){
+                    PR_DEBUG("\nClearing signal.");
+                    signal_on = 0;
+                    ret = 0;
+                }
+
+                if (ret & (wait_signal==1)) {
+                    if (out_class==2) {
+                        PR_DEBUG("\nTurning left.");
+                        signal_on = 1;
+                        wait_signal = 0;
+                    }
+                    else if (out_class==3) {
+                        PR_DEBUG("\nTurning right.");
+                        signal_on = 1;
+                        wait_signal = 0;
+                    }
+                    else if (out_class==4) {
+                        PR_DEBUG("\nBreaking.");
+                        signal_on = 1;
+                        wait_signal = 0;
+                    }
+                    else {
+                        PR_DEBUG("\nPlease repeat that...");
+                    }
+                    ret = 0;
+                }
+
+                // PR_DEBUG("\n----------------------------------------- \n");
 
                 Max = 0;
                 Min = 0;
@@ -783,7 +842,7 @@ uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data,
 #endif
     }
 
-    PR_DEBUG("Min: %d,   Max: %d \n", Min, Max);
+    // PR_DEBUG("Min: %d,   Max: %d \n", Min, Max);
 
     /* check if probability is low */
     if (*out_prob > INFERENCE_THRESHOLD)
