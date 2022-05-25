@@ -16,7 +16,7 @@
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES`
 * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 * OTHER DEALINGS IN THE SOFTWARE.
@@ -60,6 +60,9 @@
 #include "led.h"
 #include "pb.h"
 #include "cnn.h"
+#include "board.h"
+#include "gpio.h"
+
 #ifdef BOARD_FTHR_REVA
 #include "tft_ili9341.h"
 #endif
@@ -70,6 +73,11 @@
 
 #define VERSION   "3.0.2 (02/08/21)" // Low power mode
 /* **** Definitions **** */
+
+// GPIO LED
+#define MXC_GPIO_PORT_OUT               MXC_GPIO0
+#define MXC_GPIO_PIN_OUT                MXC_GPIO_PIN_9
+
 #define CLOCK_SOURCE    0   // 0: IPO,  1: ISO, 2: IBRO
 #define SLEEP_MODE      0   // 0: no sleep,  1: sleep,   2:deepsleep(LPM)
 #define WUT_ENABLE          // enables WUT timer
@@ -222,6 +230,14 @@ void WUT_IRQHandler()
 
 int main(void)
 {
+
+    mxc_gpio_cfg_t gpio_out;
+    gpio_out.port = MXC_GPIO_PORT_OUT;
+    gpio_out.mask = MXC_GPIO_PIN_OUT;
+    gpio_out.pad = MXC_GPIO_PAD_NONE;
+    gpio_out.func = MXC_GPIO_FUNC_OUT;
+    gpio_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&gpio_out);
 
     int16_t wait_signal = 0;
     int16_t signal_on = 0;
@@ -656,23 +672,11 @@ int main(void)
 
                 if (ret & (out_class==19) & (signal_on==0)){
                     PR_DEBUG("\nWhat signal to light?");
-                    // light LED1
-                    LED_Off(LED2);
-                    zero_blink = 32767;
-                    while (zero_blink) {
-                        zero_blink--;
-                    }
-                    LED_On(LED2);
-                    zero_blink = 32767;
-                    while (zero_blink) {
-                        zero_blink--;
-                    }
-                    LED_Off(LED2);
-                    zero_blink = 32767;
-                    while (zero_blink) {
-                        zero_blink--;
-                    }
-                    LED_On(LED2);
+                    //LED
+                    MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
+                    MXC_Delay(1000000);
+                    MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
+
                     wait_signal = 1;
                     ret = 0;
                 }
@@ -688,16 +692,37 @@ int main(void)
                         PR_DEBUG("\nTurning left.");
                         signal_on = 1;
                         wait_signal = 0;
+                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
+                        MXC_Delay(200000);
+                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
+                        MXC_Delay(200000);
+                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
+                        MXC_Delay(200000);
+                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
                     }
                     else if (out_class==3) {
                         PR_DEBUG("\nTurning right.");
                         signal_on = 1;
                         wait_signal = 0;
+                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
+                        MXC_Delay(200000);
+                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
+                        MXC_Delay(200000);
+                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
+                        MXC_Delay(200000);
+                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
                     }
                     else if (out_class==4) {
                         PR_DEBUG("\nBreaking.");
                         signal_on = 1;
                         wait_signal = 0;
+                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
+                        MXC_Delay(200000);
+                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
+                        MXC_Delay(200000);
+                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
+                        MXC_Delay(200000);
+                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
                     }
                     else {
                         PR_DEBUG("\nPlease repeat that...");
