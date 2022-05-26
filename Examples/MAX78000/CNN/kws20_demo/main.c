@@ -74,9 +74,17 @@
 #define VERSION   "3.0.2 (02/08/21)" // Low power mode
 /* **** Definitions **** */
 
-// GPIO LED
-#define MXC_GPIO_PORT_OUT               MXC_GPIO0
-#define MXC_GPIO_PIN_OUT                MXC_GPIO_PIN_9
+// LEFT ARROW LED
+#define MXC_GPIO_PORT_OUT_LEFT                MXC_GPIO0
+#define MXC_GPIO_PIN_OUT_LEFT                MXC_GPIO_PIN_9
+
+// BREAK LINE LED
+#define MXC_GPIO_PORT_OUT_BREAK               MXC_GPIO0
+#define MXC_GPIO_PIN_OUT_BREAK                MXC_GPIO_PIN_8
+
+// RIGHT ARROW LED
+#define MXC_GPIO_PORT_OUT_RIGHT               MXC_GPIO0
+#define MXC_GPIO_PIN_OUT_RIGHT                MXC_GPIO_PIN_11
 
 #define CLOCK_SOURCE    0   // 0: IPO,  1: ISO, 2: IBRO
 #define SLEEP_MODE      0   // 0: no sleep,  1: sleep,   2:deepsleep(LPM)
@@ -231,17 +239,31 @@ void WUT_IRQHandler()
 int main(void)
 {
 
-    mxc_gpio_cfg_t gpio_out;
-    gpio_out.port = MXC_GPIO_PORT_OUT;
-    gpio_out.mask = MXC_GPIO_PIN_OUT;
-    gpio_out.pad = MXC_GPIO_PAD_NONE;
-    gpio_out.func = MXC_GPIO_FUNC_OUT;
-    gpio_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
-    MXC_GPIO_Config(&gpio_out);
+    mxc_gpio_cfg_t gpio_left;
+    gpio_left.port = MXC_GPIO_PORT_OUT_LEFT;
+    gpio_left.mask = MXC_GPIO_PIN_OUT_LEFT;
+    gpio_left.pad = MXC_GPIO_PAD_NONE;
+    gpio_left.func = MXC_GPIO_FUNC_OUT;
+    gpio_left.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&gpio_left);
 
-    int16_t wait_signal = 0;
-    int16_t signal_on = 0;
-    int16_t zero_blink = 5;
+    mxc_gpio_cfg_t gpio_break;
+    gpio_break.port = MXC_GPIO_PORT_OUT_BREAK;
+    gpio_break.mask = MXC_GPIO_PIN_OUT_BREAK;
+    gpio_break.pad = MXC_GPIO_PAD_NONE;
+    gpio_break.func = MXC_GPIO_FUNC_OUT;
+    gpio_break.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&gpio_break);
+
+    mxc_gpio_cfg_t gpio_right;
+    gpio_right.port = MXC_GPIO_PORT_OUT_RIGHT;
+    gpio_right.mask = MXC_GPIO_PIN_OUT_RIGHT;
+    gpio_right.pad = MXC_GPIO_PAD_NONE;
+    gpio_right.func = MXC_GPIO_FUNC_OUT;
+    gpio_right.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&gpio_right);
+
+    int instr = 0b00000;
 
     uint32_t sampleCounter = 0;
     mxc_tmr_unit_t units;
@@ -662,7 +684,7 @@ int main(void)
 
                 if (!ret) {
                     // PR_DEBUG("LOW CONFIDENCE!: ");
-                    PR_DEBUG("\n.");
+                    printf("\n.");
                 }
 
                 // if (ret) {
@@ -670,65 +692,75 @@ int main(void)
                 //          probability);
                 // }
 
-                if (ret & (out_class==19) & (signal_on==0)){
-                    PR_DEBUG("\nWhat signal to light?");
-                    //LED
-                    MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
-                    MXC_Delay(1000000);
-                    MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
-
-                    wait_signal = 1;
+                if (ret & (out_class==19)){ // ZERO
+                    ret = 0;
+                    // Set instr
+                    instr = instr | 0b10000;
+                    printf("\nZero");
+                }
+                if (ret & (instr==16)) {
+                    switch (out_class) {
+                        case 2: // LEFT
+                            instr = instr | 0b01000;
+                            printf("\nLeft");
+                            break;
+                        case 3: // RIGHT
+                            instr = instr | 0b00100;
+                            printf("\nRight");
+                            break;
+                        case 4: // STOP
+                            instr = instr | 0b00010;
+                            printf("\nStop");
+                            break;
+                        case 5: // GO
+                            instr = instr | 0b00001;
+                            printf("\nGo");
+                            break;
+                    }
                     ret = 0;
                 }
 
-                if (ret & (out_class==5) & (signal_on==1)){
-                    PR_DEBUG("\nClearing signal.");
-                    signal_on = 0;
-                    ret = 0;
+                // HANDLE STATES
+                // Left arrow
+                if (instr == 0b11000){
+                    // clear all LED first
+                    MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
+                    MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
+                    MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
+                    // light left and break line
+                    MXC_GPIO_OutSet(gpio_left.port, gpio_left.mask);
+                    MXC_GPIO_OutSet(gpio_break.port, gpio_break.mask);
+                    instr = 0b00000;
                 }
-
-                if (ret & (wait_signal==1)) {
-                    if (out_class==2) {
-                        PR_DEBUG("\nTurning left.");
-                        signal_on = 1;
-                        wait_signal = 0;
-                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
-                        MXC_Delay(200000);
-                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
-                        MXC_Delay(200000);
-                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
-                        MXC_Delay(200000);
-                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
-                    }
-                    else if (out_class==3) {
-                        PR_DEBUG("\nTurning right.");
-                        signal_on = 1;
-                        wait_signal = 0;
-                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
-                        MXC_Delay(200000);
-                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
-                        MXC_Delay(200000);
-                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
-                        MXC_Delay(200000);
-                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
-                    }
-                    else if (out_class==4) {
-                        PR_DEBUG("\nBreaking.");
-                        signal_on = 1;
-                        wait_signal = 0;
-                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
-                        MXC_Delay(200000);
-                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
-                        MXC_Delay(200000);
-                        MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
-                        MXC_Delay(200000);
-                        MXC_GPIO_OutClr(gpio_out.port, gpio_out.mask);
-                    }
-                    else {
-                        PR_DEBUG("\nPlease repeat that...");
-                    }
-                    ret = 0;
+                // Right arrow
+                if (instr == 0b10100){
+                    // clear all LED first
+                    MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
+                    MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
+                    MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
+                    // light right and break line
+                    MXC_GPIO_OutSet(gpio_right.port, gpio_right.mask);
+                    MXC_GPIO_OutSet(gpio_break.port, gpio_break.mask);
+                    instr = 0b00000;
                 }
+                // Break line
+                if (instr == 0b10010){
+                    // clear all LED first
+                    MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
+                    MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
+                    MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
+                    // light break line
+                    MXC_GPIO_OutSet(gpio_break.port, gpio_break.mask);
+                    instr = 0b00000;
+                }
+                // Go or Clear
+                if (instr == 0b10001){
+                    MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
+                    MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
+                    MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
+                    instr = 0b00000;
+                }
+                printf("\n%d", instr);
 
                 // PR_DEBUG("\n----------------------------------------- \n");
 
