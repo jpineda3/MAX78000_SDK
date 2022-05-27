@@ -62,6 +62,7 @@
 #include "cnn.h"
 #include "board.h"
 #include "gpio.h"
+#include "lpgcr_regs.h"
 
 #ifdef BOARD_FTHR_REVA
 #include "tft_ili9341.h"
@@ -73,6 +74,32 @@
 
 #define VERSION   "3.0.2 (02/08/21)" // Low power mode
 /* **** Definitions **** */
+
+// BLINKY USING TIMER
+int STATE =  0b00000;
+int NEXT_STATE = 0b00000;
+int STARTUP = true;
+
+// Parameters for PWM output
+#define OST_CLOCK_SOURCE    MXC_TMR_8K_CLK       // \ref mxc_tmr_clock_t
+#define PWM_CLOCK_SOURCE    MXC_TMR_32K_CLK      // \ref mxc_tmr_clock_t
+#define CONT_CLOCK_SOURCE   MXC_TMR_8M_CLK       // \ref mxc_tmr_clock_t
+
+// Parameters for Continuous timer
+#define OST_FREQ        1                   // (Hz)
+#define OST_TIMER       MXC_TMR5            // Can be MXC_TMR0 through MXC_TMR5
+
+#define FREQ            10                // (Hz)
+#define DUTY_CYCLE      50                  // (%)
+#define PWM_TIMER       MXC_TMR4            // must change PWM_PORT and PWM_PIN if changed
+
+// Parameters for Continuous timer
+#define CONT_FREQ       4                   // (Hz)
+#define CONT_TIMER      MXC_TMR1            // Can be MXC_TMR0 through MXC_TMR5
+
+// BLINK LED
+#define MXC_GPIO_PORT_OUT_BLINK               MXC_GPIO0
+#define MXC_GPIO_PIN_OUT_BLINK                MXC_GPIO_PIN_19
 
 // LEFT ARROW LED
 #define MXC_GPIO_PORT_OUT_LEFT                MXC_GPIO0
@@ -234,11 +261,188 @@ void WUT_IRQHandler()
 }
 #endif
 
+mxc_gpio_cfg_t initBlinkLED() {
+    mxc_gpio_cfg_t gpio_blink;
+    gpio_blink.port = MXC_GPIO_PORT_OUT_BLINK;
+    gpio_blink.mask = MXC_GPIO_PIN_OUT_BLINK;
+    gpio_blink.pad = MXC_GPIO_PAD_NONE;
+    gpio_blink.func = MXC_GPIO_FUNC_OUT;
+    gpio_blink.vssel = MXC_GPIO_VSSEL_VDDIOH;
+
+    if (STARTUP) {
+        MXC_GPIO_Config(&gpio_blink);
+    }
+    // mxc_gpio_cfg_t gpio_left;
+    // gpio_left.port = MXC_GPIO_PORT_OUT_LEFT;
+    // gpio_left.mask = MXC_GPIO_PIN_OUT_LEFT;
+    // gpio_left.pad = MXC_GPIO_PAD_NONE;
+    // gpio_left.func = MXC_GPIO_FUNC_OUT;
+    // gpio_left.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    // MXC_GPIO_Config(&gpio_left);
+
+    // mxc_gpio_cfg_t gpio_break;
+    // gpio_break.port = MXC_GPIO_PORT_OUT_BREAK;
+    // gpio_break.mask = MXC_GPIO_PIN_OUT_BREAK;
+    // gpio_break.pad = MXC_GPIO_PAD_NONE;
+    // gpio_break.func = MXC_GPIO_FUNC_OUT;
+    // gpio_break.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    // MXC_GPIO_Config(&gpio_break);
+
+    // mxc_gpio_cfg_t gpio_right;
+    // gpio_right.port = MXC_GPIO_PORT_OUT_RIGHT;
+    // gpio_right.mask = MXC_GPIO_PIN_OUT_RIGHT;
+    // gpio_right.pad = MXC_GPIO_PAD_NONE;
+    // gpio_right.func = MXC_GPIO_FUNC_OUT;
+    // gpio_right.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    // MXC_GPIO_Config(&gpio_right);
+
+    return gpio_blink;
+}
+
+
+// Toggles GPIO when continuous timer repeats
+void ContinuousTimerHandler()
+{
+    printf("\ninside CT");
+    // Clear interrupt
+    MXC_TMR_ClearFlags(CONT_TIMER);
+    LED_Toggle(LED1);
+    // initializeLED();
+    mxc_gpio_cfg_t gpio_blink;
+    gpio_blink.port = MXC_GPIO_PORT_OUT_BLINK;
+    gpio_blink.mask = MXC_GPIO_PIN_OUT_BLINK;
+    gpio_blink.pad = MXC_GPIO_PAD_NONE;
+    gpio_blink.func = MXC_GPIO_FUNC_OUT;
+    gpio_blink.vssel = MXC_GPIO_VSSEL_VDDIOH; 
+    MXC_GPIO_Config(&gpio_blink);
+
+    // initialize signal LEDs
+     mxc_gpio_cfg_t gpio_left;
+    gpio_left.port = MXC_GPIO_PORT_OUT_LEFT;
+    gpio_left.mask = MXC_GPIO_PIN_OUT_LEFT;
+    gpio_left.pad = MXC_GPIO_PAD_NONE;
+    gpio_left.func = MXC_GPIO_FUNC_OUT;
+    gpio_left.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&gpio_left);
+
+    mxc_gpio_cfg_t gpio_break;
+    gpio_break.port = MXC_GPIO_PORT_OUT_BREAK;
+    gpio_break.mask = MXC_GPIO_PIN_OUT_BREAK;
+    gpio_break.pad = MXC_GPIO_PAD_NONE;
+    gpio_break.func = MXC_GPIO_FUNC_OUT;
+    gpio_break.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&gpio_break);
+
+    mxc_gpio_cfg_t gpio_right;
+    gpio_right.port = MXC_GPIO_PORT_OUT_RIGHT;
+    gpio_right.mask = MXC_GPIO_PIN_OUT_RIGHT;
+    gpio_right.pad = MXC_GPIO_PAD_NONE;
+    gpio_right.func = MXC_GPIO_FUNC_OUT;
+    gpio_right.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&gpio_right);
+
+    // Blink debug LED
+    // Left arrow
+    if (NEXT_STATE == 0b11000){
+        // Toggle
+        MXC_GPIO_OutToggle(gpio_blink.port, gpio_blink.mask);
+    }
+    // Right arrow
+    if (NEXT_STATE == 0b10100){
+        // turn on
+        MXC_GPIO_OutSet(gpio_blink.port, gpio_blink.mask);
+    }
+    // Go or Clear
+    if (NEXT_STATE == 0b10001){
+        MXC_GPIO_OutClr(gpio_blink.port, gpio_blink.mask);
+    }
+
+    // HANDLE STATES
+    // clear all LED first
+    // MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
+    // MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
+    // MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
+    // Left arrow
+    if (NEXT_STATE == 0b11000){
+        // light left and break line
+        MXC_GPIO_OutToggle(gpio_left.port, gpio_left.mask);
+        MXC_GPIO_OutToggle(gpio_break.port, gpio_break.mask);
+    }
+    // Right arrow
+    if (NEXT_STATE == 0b10100){
+        // light right and break line
+        MXC_GPIO_OutToggle(gpio_right.port, gpio_right.mask);
+        MXC_GPIO_OutToggle(gpio_break.port, gpio_break.mask);
+    }
+    // Break line
+    if (NEXT_STATE == 0b10010){
+        // light break line
+        MXC_GPIO_OutToggle(gpio_break.port, gpio_break.mask);
+    }
+    // // Go or Clear
+    // if (NEXT_STATE == 0b10001){
+    //     MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
+    //     MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
+    //     MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
+    // }
+    printf("\ncurrent state: %d, next state: %d", STATE, NEXT_STATE);
+}
+
+void ContinuousTimer()
+{
+    printf("\ninside ContinuousTimer");
+    // Declare variables
+    mxc_tmr_cfg_t tmr;
+    uint32_t periodTicks = MXC_TMR_GetPeriod(CONT_TIMER, CONT_CLOCK_SOURCE, 128, CONT_FREQ);
+    
+    /*
+    Steps for configuring a timer for PWM mode:
+    1. Disable the timer
+    2. Set the prescale value
+    3  Configure the timer for continuous mode
+    4. Set polarity, timer parameters
+    5. Enable Timer
+    */
+    
+    MXC_TMR_Shutdown(CONT_TIMER);
+    
+    tmr.pres = TMR_PRES_128;
+    tmr.mode = TMR_MODE_CONTINUOUS;
+    tmr.bitMode = TMR_BIT_MODE_16B;
+    tmr.clock = CONT_CLOCK_SOURCE;
+    tmr.cmp_cnt = periodTicks;      //SystemCoreClock*(1/interval_time);
+    tmr.pol = 0;
+    
+    if (MXC_TMR_Init(CONT_TIMER, &tmr, true) != E_NO_ERROR) {
+        printf("Failed Continuous timer Initialization.\n");
+        return;
+    }
+    
+    printf("Continuous timer started.\n\n");
+}
+
+void TimerHandler()
+{
+    printf("\nInside timer Handler");
+    
+    NVIC_SetVector(TMR1_IRQn, ContinuousTimerHandler);
+    NVIC_EnableIRQ(TMR1_IRQn);
+    ContinuousTimer();
+}
 /* **************************************************************************** */
+
+// mxc_gpio_cfg_t gpio_left;
+// gpio_left.port = MXC_GPIO_PORT_OUT_LEFT;
+// gpio_left.mask = MXC_GPIO_PIN_OUT_LEFT;
+// gpio_left.pad = MXC_GPIO_PAD_NONE;
+// gpio_left.func = MXC_GPIO_FUNC_OUT;
+// gpio_left.vssel = MXC_GPIO_VSSEL_VDDIOH;
+
 
 int main(void)
 {
-
+    TimerHandler();
+    STARTUP = false;
     mxc_gpio_cfg_t gpio_left;
     gpio_left.port = MXC_GPIO_PORT_OUT_LEFT;
     gpio_left.mask = MXC_GPIO_PIN_OUT_LEFT;
@@ -718,14 +922,20 @@ int main(void)
                             break;
                     }
                     ret = 0;
+                    if (instr>16) { // 1xxxx any x assigned
+                        printf("instruction: %d", instr);
+                        NEXT_STATE = instr;
+                        NVIC_EnableIRQ(TMR5_IRQn);
+                        // instr = 0b00000;
+                    }
                 }
 
                 // HANDLE STATES
                 // Left arrow
                 if (instr == 0b11000){
                     // clear all LED first
-                    MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
-                    MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
+                    // MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
+                    // MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
                     MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
                     // light left and break line
                     MXC_GPIO_OutSet(gpio_left.port, gpio_left.mask);
@@ -736,8 +946,8 @@ int main(void)
                 if (instr == 0b10100){
                     // clear all LED first
                     MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
-                    MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
-                    MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
+                    // MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
+                    // MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
                     // light right and break line
                     MXC_GPIO_OutSet(gpio_right.port, gpio_right.mask);
                     MXC_GPIO_OutSet(gpio_break.port, gpio_break.mask);
@@ -746,9 +956,9 @@ int main(void)
                 // Break line
                 if (instr == 0b10010){
                     // clear all LED first
-                    MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
+                    // MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
                     MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
-                    MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
+                    // MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
                     // light break line
                     MXC_GPIO_OutSet(gpio_break.port, gpio_break.mask);
                     instr = 0b00000;
