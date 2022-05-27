@@ -956,9 +956,9 @@ int main(void)
                 // Break line
                 if (instr == 0b10010){
                     // clear all LED first
-                    // MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
-                    MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
-                    // MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
+                    MXC_GPIO_OutClr(gpio_left.port, gpio_left.mask);
+                    // MXC_GPIO_OutClr(gpio_break.port, gpio_break.mask);
+                    MXC_GPIO_OutClr(gpio_right.port, gpio_right.mask);
                     // light break line
                     MXC_GPIO_OutSet(gpio_break.port, gpio_break.mask);
                     instr = 0b00000;
